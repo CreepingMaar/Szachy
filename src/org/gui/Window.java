@@ -47,7 +47,7 @@ public class Window extends JFrame {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Integer row = table.rowAtPoint(evt.getPoint());
-                Integer col = table.columnAtPoint(evt.getPoint());
+                Integer col = table.columnAtPoint(evt.getPoint());                        
         
                 if(!drag)
                     drag = newBoard.choseDragFigure(row, col);
@@ -60,6 +60,9 @@ public class Window extends JFrame {
                     String imagePath = newBoard.getDragFigure().getImagePath();
                     FigurePosition nowMove;
                     Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
+                    Figure nowFigure;
+                    Iterator<Figure> itFigure = newBoard.getFiguresOnBoard().iterator();
+
                     while(itMove.hasNext()) {
                         nowMove = itMove.next();
                         possY = nowMove.getY();
@@ -69,8 +72,12 @@ public class Window extends JFrame {
                             newBoard.setDraggedFigure(row, col);
                             table.setValueAt(null, y, x);
                             table.setValueAt(imagePath, row, col);
-                            newBoard.getDragFigure().getPossibleMoves().clear();
                         }
+                    }
+                    
+                    while(itFigure.hasNext()) {
+                        nowFigure = itFigure.next();
+                        nowFigure.getPossibleMoves().clear();
                     }
                     drag=false;
                 }

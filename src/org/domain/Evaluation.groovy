@@ -81,6 +81,20 @@ Integer[][] queenValue = [
     public Evaluation() {
         
     }
+    
+    Set<FigurePosition> allMoves = new HashSet<FigurePosition>()
+    
+    public void generateMoves(Board board) {
+        Iterator<Figure> it = board.getFiguresOnBoard().iterator();
+        Figure now
+        while(it.hasNext()) {
+            now = it.next();
+            now.movePossibility()
+            now.checkMoves(board)
+            allMoves.addAll(now.getPossibleMoves())
+        };
+
+    }
 
     public Integer evaluate(Board board) {
         Integer scoreWhite = 0
@@ -141,6 +155,105 @@ Integer[][] queenValue = [
         }
         
         return scoreWhite - scoreBlack
+    }
+    
+    public FigurePosition maxi(Board board, Integer depth) {
+        if(depth<=0)
+            evaluate(board)
+            
+        Integer bestScore = -1
+        FigurePosition bestMove
+        Figure nowFigure;
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next();
+            nowFigure.getPossibleMoves().clear();
+        }    
+        generateMoves(board)
+        FigurePosition nowMove
+        Iterator<FigurePosition> itMove = allMoves.iterator()
+        FigurePosition backupMove
+        
+        while(itMove.hasNext()) {
+            nowMove = itMove.next()
+            backupMove = makeMove(nowMove, board)
+            //mini(board, depth-1)
+            if(evaluate(board) > bestScore) {
+                bestScore = evaluate(board)
+                bestMove = nowMove
+            }
+            undoMove(nowMove, backupMove, board)
+        }
+        
+        return bestMove
+    }
+    
+    public FigurePosition mini(Board board, Integer depth) {
+        if(depth<=0)
+            evaluate(board)
+            
+        Integer bestScore = 100000
+        FigurePosition bestMove
+        Figure nowFigure;
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next();
+            nowFigure.getPossibleMoves().clear();
+        }      
+        generateMoves(board)
+        FigurePosition nowMove
+        Iterator<FigurePosition> itMove = allMoves.iterator()
+        FigurePosition backupMove
+        
+        while(itMove.hasNext()) {
+            nowMove = itMove.next()
+            backupMove = makeMove(nowMove, board)
+            maxi(board, depth-1)
+            if(evaluate(board) < bestScore) {
+                bestScore = evaluate(board)
+                bestMove = nowMove
+            }
+            undoMove(nowMove, backupMove, board)
+        }
+        
+        return bestMove
+    }
+    
+    public FigurePosition makeMove(FigurePosition nowMove, Board board) {
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
+        Figure nowFigure
+        FigurePosition nowFigureMove
+        Iterator<FigurePosition> itMove
+        FigurePosition backupMove
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next()
+            itMove = nowFigure.getPossibleMoves().iterator()
+            while(itMove.hasNext()) {
+                nowFigureMove = itMove.next()
+                if(nowFigureMove == nowMove) {
+                    backupMove = nowFigure.getPosition()
+                    nowFigure.setPosition(nowMove)
+                }
+            }      
+        }
+        return backupMove
+    }
+    
+    public void undoMove(FigurePosition nowMove, FigurePosition backupMove, Board board) {
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
+        Figure nowFigure
+        FigurePosition nowFigureMove
+        Iterator<FigurePosition> itMove
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next()
+            itMove = nowFigure.getPossibleMoves().iterator()
+            while(itMove.hasNext()) {
+                nowFigureMove = itMove.next()
+                if(nowFigureMove == nowMove) {
+                    nowFigure.setPosition(backupMove)
+                }
+            }      
+        }
     }
 	
 }

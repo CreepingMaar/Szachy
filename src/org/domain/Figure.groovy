@@ -65,7 +65,6 @@ public class Figure {
                 possibleMoves.add(new FigurePosition(x, y+2))
         }
             
-        startPosition = false
     }
     
     public void generateRookMoves() {

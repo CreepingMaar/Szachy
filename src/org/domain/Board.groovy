@@ -18,9 +18,12 @@ class Board {
     Set<Figure> figuresOnBoard = new HashSet<Figure>()
     Set<Figure> figuresOffBoard = new HashSet<Figure>()
     Figure dragFigure
+    Integer turn
+    String turnColor
     
     
     public Board () {
+        turn = 1
         width = 8
         height = 8
         cellHeight = 80
@@ -49,18 +52,23 @@ class Board {
     }
     
     public Boolean choseDragFigure(Integer row, Integer col) {
+        if(turn == 1)
+            turnColor = "white"
+        else if(turn == -1)
+            turnColor = "black"
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
         Evaluation value = new Evaluation()
+        String nowColor
         Integer x, y
+        value.maxi(this, 3)
         while(it.hasNext()) {
             now = it.next();
-            x = now.getPosition().getX();
-            y = now.getPosition().getY();
-            if(x==col && y==row) {
+            x = now.getPosition().getX()
+            y = now.getPosition().getY()
+            nowColor = now.getColor()
+            if(x==col && y==row && turnColor == nowColor) {
                 dragFigure = now
-                dragFigure.movePossibility()
-                dragFigure.checkMoves(this)
                 value.evaluate(this)
                 return true;
             }
@@ -92,6 +100,7 @@ class Board {
             if(now.getPosition().getX()==x && now.getPosition().getY()==y) { 
                 now.getPosition().setX(col);
                 now.getPosition().setY(row);
+                turn = -turn
             } 
         }
     }
