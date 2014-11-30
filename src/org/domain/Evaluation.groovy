@@ -12,71 +12,75 @@ package org.domain
  */
 class Evaluation {
 
-Integer[][] pawnValue = [
-    [0,  0,  0,  0,  0,  0,  0,  0],
-    [50, 50, 50, 50, 50, 50, 50, 50],
-    [10, 10, 20, 30, 30, 20, 10, 10],
-    [5,  5, 10, 25, 25, 10,  5,  5],
-    [0,  0,  0, 20, 20,  0,  0,  0],
-    [5, -5,-10,  0,  0,-10, -5,  5],
-    [5, 10, 10,-20,-20, 10, 10,  5],
-    [0,  0,  0,  0,  0,  0,  0,  0]
-]
+    Integer[][] pawnValue = [
+        [0,  0,  0,  0,  0,  0,  0,  0],
+        [50, 50, 50, 50, 50, 50, 50, 50],
+        [10, 10, 20, 30, 30, 20, 10, 10],
+        [5,  5, 10, 25, 25, 10,  5,  5],
+        [0,  0,  0, 20, 20,  0,  0,  0],
+        [5, -5,-10,  0,  0,-10, -5,  5],
+        [5, 10, 10,-20,-20, 10, 10,  5],
+        [0,  0,  0,  0,  0,  0,  0,  0]
+    ]
 
-Integer[][] knightValue = [
-    [-50,-40,-30,-30,-30,-30,-40,-50],
-    [-40,-20,  0,  0,  0,  0,-20,-40],
-    [-30,  0, 10, 15, 15, 10,  0,-30],
-    [-30,  5, 15, 20, 20, 15,  5,-30],
-    [-30,  0, 15, 20, 20, 15,  0,-30],
-    [-30,  5, 10, 15, 15, 10,  5,-30],
-    [-40,-20,  0,  5,  5,  0,-20,-40],
-    [-50,-40,-30,-30,-30,-30,-40,-50],
-]
+    Integer[][] knightValue = [
+        [-50,-40,-30,-30,-30,-30,-40,-50],
+        [-40,-20,  0,  0,  0,  0,-20,-40],
+        [-30,  0, 10, 15, 15, 10,  0,-30],
+        [-30,  5, 15, 20, 20, 15,  5,-30],
+        [-30,  0, 15, 20, 20, 15,  0,-30],
+        [-30,  5, 10, 15, 15, 10,  5,-30],
+        [-40,-20,  0,  5,  5,  0,-20,-40],
+        [-50,-40,-30,-30,-30,-30,-40,-50],
+    ]
 
-Integer[][] bishopValue = [
-    [-20,-10,-10,-10,-10,-10,-10,-20],
-    [-10,  0,  0,  0,  0,  0,  0,-10],
-    [-10,  0,  5, 10, 10,  5,  0,-10],
-    [-10,  5,  5, 10, 10,  5,  5,-10],
-    [-10,  0, 10, 10, 10, 10,  0,-10],
-    [-10, 10, 10, 10, 10, 10, 10,-10],
-    [-10,  5,  0,  0,  0,  0,  5,-10],
-    [-20,-10,-10,-10,-10,-10,-10,-20],
-]
+    Integer[][] bishopValue = [
+        [-20,-10,-10,-10,-10,-10,-10,-20],
+        [-10,  0,  0,  0,  0,  0,  0,-10],
+        [-10,  0,  5, 10, 10,  5,  0,-10],
+        [-10,  5,  5, 10, 10,  5,  5,-10],
+        [-10,  0, 10, 10, 10, 10,  0,-10],
+        [-10, 10, 10, 10, 10, 10, 10,-10],
+        [-10,  5,  0,  0,  0,  0,  5,-10],
+        [-20,-10,-10,-10,-10,-10,-10,-20],
+    ]
 
-Integer[][] rookValue = [
-    [0,  0,  0,  0,  0,  0,  0,  0],
-    [5, 10, 10, 10, 10, 10, 10,  5],
-    [-5,  0,  0,  0,  0,  0,  0, -5],
-    [-5,  0,  0,  0,  0,  0,  0, -5],
-    [-5,  0,  0,  0,  0,  0,  0, -5],
-    [-5,  0,  0,  0,  0,  0,  0, -5],
-    [-5,  0,  0,  0,  0,  0,  0, -5],
-    [0,  0,  0,  5,  5,  0,  0,  0]
-]
+    Integer[][] rookValue = [
+        [0,  0,  0,  0,  0,  0,  0,  0],
+        [5, 10, 10, 10, 10, 10, 10,  5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [0,  0,  0,  5,  5,  0,  0,  0]
+    ]
 
-Integer[][] kingValue = [
-    [-30,-40,-40,-50,-50,-40,-40,-30],
-    [-30,-40,-40,-50,-50,-40,-40,-30],
-    [-30,-40,-40,-50,-50,-40,-40,-30],
-    [-30,-40,-40,-50,-50,-40,-40,-30],
-    [-20,-30,-30,-40,-40,-30,-30,-20],
-    [-10,-20,-20,-20,-20,-20,-20,-10],
-    [20, 20,  0,  0,  0,  0, 20, 20],
-    [20, 30, 10,  0,  0, 10, 30, 20]
-]
+    Integer[][] kingValue = [
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-20,-30,-30,-40,-40,-30,-30,-20],
+        [-10,-20,-20,-20,-20,-20,-20,-10],
+        [20, 20,  0,  0,  0,  0, 20, 20],
+        [20, 30, 10,  0,  0, 10, 30, 20]
+    ]
 
-Integer[][] queenValue = [
-    [-20,-10,-10, -5, -5,-10,-10,-20],
-    [-10,  0,  0,  0,  0,  0,  0,-10],
-    [-10,  0,  5,  5,  5,  5,  0,-10],
-    [-5,  0,  5,  5,  5,  5,  0, -5],
-    [0,  0,  5,  5,  5,  5,  0, -5],
-    [-10,  5,  5,  5,  5,  5,  0,-10],
-    [-10,  0,  5,  0,  0,  0,  0,-10],
-    [-20,-10,-10, -5, -5,-10,-10,-20]
-]
+    Integer[][] queenValue = [
+        [-20,-10,-10, -5, -5,-10,-10,-20],
+        [-10,  0,  0,  0,  0,  0,  0,-10],
+        [-10,  0,  5,  5,  5,  5,  0,-10],
+        [-5,  0,  5,  5,  5,  5,  0, -5],
+        [0,  0,  5,  5,  5,  5,  0, -5],
+        [-10,  5,  5,  5,  5,  5,  0,-10],
+        [-10,  0,  5,  0,  0,  0,  0,-10],
+        [-20,-10,-10, -5, -5,-10,-10,-20]
+    ]
+
+    Integer[] figureValue = [
+        100, 320, 330, 500, 900, 20000
+    ]
 
     public Evaluation() {
         
@@ -87,11 +91,15 @@ Integer[][] queenValue = [
     public void generateMoves(Board board) {
         Iterator<Figure> it = board.getFiguresOnBoard().iterator();
         Figure now
+        String nowColor
         while(it.hasNext()) {
             now = it.next();
-            now.movePossibility()
-            now.checkMoves(board)
-            allMoves.addAll(now.getPossibleMoves())
+            nowColor = now.getColor()
+            if(board.whosTurn(board.getTurn()) == nowColor) {
+                now.movePossibility()
+                now.checkMoves(board)
+                allMoves.addAll(now.getPossibleMoves())
+            }
         };
 
     }
@@ -117,50 +125,74 @@ Integer[][] queenValue = [
                 y = now.getPosition().getY()
                 
             if(chessPiece == "queen") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += queenValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[4]
+                }
+                else if (color == "black") {
                     scoreBlack += queenValue[x][y]
+                    scoreBlack += figureValue[4]
+                }
             }
             else if(chessPiece == "king") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += kingValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[5]
+                }
+                else if (color == "black") {
                     scoreBlack += kingValue[x][y]
+                    scoreBlack += figureValue[5]
+                }
             }
             else if(chessPiece == "rook") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += rookValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[3]
+                }
+                else if (color == "black") {
                     scoreBlack += rookValue[x][y]
+                    scoreBlack += figureValue[3]
+                }
             }
             else if(chessPiece == "pawn") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += pawnValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[0]
+                }
+                else if (color == "black") {
                     scoreBlack += pawnValue[x][y]
+                    scoreBlack += figureValue[0]
+                }
             }
             else if(chessPiece == "bishop") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += bishopValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[2]
+                }
+                else if (color == "black") {
                     scoreBlack += bishopValue[x][y]
+                    scoreBlack += figureValue[2]
+                }
             }
             else if(chessPiece == "knight") {
-                if(color == "white")
+                if(color == "white") {
                     scoreWhite += knightValue[x][y]
-                else if (color == "black")
+                    scoreWhite += figureValue[1]
+                }
+                else if (color == "black") {
                     scoreBlack += knightValue[x][y]
+                    scoreBlack += figureValue[1]
+                }
             }
         }
         
         return scoreWhite - scoreBlack
     }
     
-    public FigurePosition maxi(Board board, Integer depth) {
+    public Integer maxi(Board board, Integer depth) {
         if(depth<=0)
-            evaluate(board)
-            
+            return evaluate(board)
+        allMoves.clear()    
         Integer bestScore = -1
         FigurePosition bestMove
         Figure nowFigure;
@@ -173,25 +205,27 @@ Integer[][] queenValue = [
         FigurePosition nowMove
         Iterator<FigurePosition> itMove = allMoves.iterator()
         FigurePosition backupMove
+        Integer value
         
         while(itMove.hasNext()) {
             nowMove = itMove.next()
             backupMove = makeMove(nowMove, board)
-            //mini(board, depth-1)
-            if(evaluate(board) > bestScore) {
-                bestScore = evaluate(board)
+            value = mini(board, depth-1)
+            if(value > bestScore) {
+                bestScore = value
                 bestMove = nowMove
             }
             undoMove(nowMove, backupMove, board)
         }
         
-        return bestMove
+        return bestScore
     }
     
-    public FigurePosition mini(Board board, Integer depth) {
+    public Integer mini(Board board, Integer depth) {
         if(depth<=0)
-            evaluate(board)
+            return evaluate(board)
             
+        allMoves.clear()     
         Integer bestScore = 100000
         FigurePosition bestMove
         Figure nowFigure;
@@ -204,13 +238,14 @@ Integer[][] queenValue = [
         FigurePosition nowMove
         Iterator<FigurePosition> itMove = allMoves.iterator()
         FigurePosition backupMove
+        Integer value
         
         while(itMove.hasNext()) {
             nowMove = itMove.next()
             backupMove = makeMove(nowMove, board)
-            maxi(board, depth-1)
-            if(evaluate(board) < bestScore) {
-                bestScore = evaluate(board)
+            value = maxi(board, depth-1)
+            if(value < bestScore) {
+                bestScore = value
                 bestMove = nowMove
             }
             undoMove(nowMove, backupMove, board)

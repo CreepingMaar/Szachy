@@ -202,10 +202,14 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(i==yPos && x==xPos)
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i>max)
                         max=i
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i-1>max)
+                        max=i-1
             }
             itFigure = board.getFiguresOnBoard().iterator()
         }
@@ -229,10 +233,14 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(i==xPos && y==yPos)
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i>max)
                         max=i
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i-1>max)
+                        max=i-1
             }
             itFigure = board.getFiguresOnBoard().iterator()
         }
@@ -256,10 +264,14 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(i==xPos && y==yPos)
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i<min)
                         min=i
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i+1<min)
+                        min=i+1        
             }
             itFigure = board.getFiguresOnBoard().iterator()
         }
@@ -283,10 +295,14 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(i==yPos && x==xPos)
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i<min)
                         min=i
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i+1<min)
+                        min=i+1  
             }
             itFigure = board.getFiguresOnBoard().iterator()
         }
@@ -322,11 +338,17 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos)
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i>maxx) {
                         maxx=i
                         maxy=j
+                    }
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i-1>maxx) {
+                        maxx=i-1
+                        maxy=j-1
                     }
             }
             itFigure = board.getFiguresOnBoard().iterator()
@@ -362,11 +384,17 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos)
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(i<maxx) {
                         maxx=i
                         maxy=j
+                    }
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(i+1<maxx) {
+                        maxx=i+1
+                        maxy=j+1
                     }
             }
             itFigure = board.getFiguresOnBoard().iterator()
@@ -390,42 +418,8 @@ public class Figure {
             j++
         }
         
-        maxx = 8
-        maxy = 8
-        i = x+1
-        j = y+1
-        while(i<=7 && j<=7) {
-            while(itFigure.hasNext()) {
-                nowFigure = itFigure.next()
-                Integer xPos = nowFigure.getPosition().getX()
-                Integer yPos = nowFigure.getPosition().getY()
-                
-                if(j==yPos && i==xPos)
-                    if(i<maxx) {
-                        maxx=i
-                        maxy=j
-                    }
-            }
-            itFigure = board.getFiguresOnBoard().iterator()
-            i++
-            j++
-        }
-        
-        i = maxx
-        j = maxy
-        while(i<=7 && j<=7) {
-            while(itMove.hasNext()) {
-                nowMove = itMove.next()
-                Integer xMove = nowMove.getX()
-                Integer yMove = nowMove.getY()
-                
-                if(j==yMove && i==xMove)
-                    itMove.remove()  
-            }
-            itMove = this.getPossibleMoves().iterator()
-            i++
-            j++
-        }
+        itFigure = board.getFiguresOnBoard().iterator()
+        itMove = this.getPossibleMoves().iterator()
         
         maxx = -1
         maxy = 8
@@ -436,11 +430,17 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos)
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(j<maxy && i>maxx) {
                         maxx=i
                         maxy=j
+                    }
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(j+1<maxx && i-1>maxx) {
+                        maxx=i-1
+                        maxy=j+1
                     }
             }
             itFigure = board.getFiguresOnBoard().iterator()
@@ -464,6 +464,9 @@ public class Figure {
             j++
         }
         
+        itFigure = board.getFiguresOnBoard().iterator()
+        itMove = this.getPossibleMoves().iterator()
+        
         maxx = 8
         maxy = -1
         i = x+1
@@ -473,11 +476,17 @@ public class Figure {
                 nowFigure = itFigure.next()
                 Integer xPos = nowFigure.getPosition().getX()
                 Integer yPos = nowFigure.getPosition().getY()
+                String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos)
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
                     if(j>maxy && i<maxx) {
                         maxx=i
                         maxy=j
+                    }
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                    if(j-1>maxx && i+1<maxx) {
+                        maxx=i+1
+                        maxy=j-1
                     }
             }
             itFigure = board.getFiguresOnBoard().iterator()

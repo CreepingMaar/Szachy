@@ -51,23 +51,27 @@ class Board {
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
     }
     
-    public Boolean choseDragFigure(Integer row, Integer col) {
+    public String whosTurn(Integer turn) {
         if(turn == 1)
-            turnColor = "white"
+            return "white"
         else if(turn == -1)
-            turnColor = "black"
+            return "black"
+    }
+    
+    public Boolean choseDragFigure(Integer row, Integer col) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
         Evaluation value = new Evaluation()
         String nowColor
         Integer x, y
-        value.maxi(this, 3)
+        Integer temp
+        temp = value.maxi(this, 3)
         while(it.hasNext()) {
             now = it.next();
             x = now.getPosition().getX()
             y = now.getPosition().getY()
             nowColor = now.getColor()
-            if(x==col && y==row && turnColor == nowColor) {
+            if(x==col && y==row && whosTurn(turn) == nowColor) {
                 dragFigure = now
                 value.evaluate(this)
                 return true;

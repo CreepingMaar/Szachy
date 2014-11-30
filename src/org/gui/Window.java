@@ -61,7 +61,6 @@ public class Window extends JFrame {
                     FigurePosition nowMove;
                     Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
                     Figure nowFigure;
-                    Iterator<Figure> itFigure = newBoard.getFiguresOnBoard().iterator();
 
                     while(itMove.hasNext()) {
                         nowMove = itMove.next();
@@ -75,6 +74,7 @@ public class Window extends JFrame {
                         }
                     }
                     
+                    Iterator<Figure> itFigure = newBoard.getFiguresOnBoard().iterator();
                     while(itFigure.hasNext()) {
                         nowFigure = itFigure.next();
                         nowFigure.getPossibleMoves().clear();
