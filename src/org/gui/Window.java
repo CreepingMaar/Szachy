@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package org.gui;
+import java.awt.BorderLayout;
 import org.domain.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,16 +16,14 @@ import java.util.Iterator;
  */
 public class Window extends JFrame {
     
-    public Window() {
-        setSize(800,800);
-        setTitle("Szachy");
-    }
     static Boolean drag = false;
     static Integer cnt = 0;
     public static void main(String[] args) {
-        Window newWindow = new Window();
+        JFrame frame = new JFrame("Szachy");
+        FigurePosition globalMove = new FigurePosition(0,0);
+        frame.setSize(800, 800);
         Board newBoard = new Board();
-        newWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JTable table = new JTable(newBoard.getWidth(), newBoard.getHeight());
         newBoard.getFiguresOnBoard().forEach((string) -> {
             Integer x = string.getPosition().getX();
@@ -38,8 +37,12 @@ public class Window extends JFrame {
         cellSize(table, newBoard.getCellWidth(), newBoard.getCellHeight());
         table.setDefaultRenderer(Object.class, new YourTableCellRendererr());
         JScrollPane scrollPane = new JScrollPane(table);
-        newWindow.add(scrollPane);
-        newWindow.setVisible(true);
+        JLabel label = new JLabel();
+        JPanel panel = new JPanel();
+        panel.add(label);
+        frame.add(panel, BorderLayout.EAST);
+        frame.add(scrollPane);
+        frame.setVisible(true);
         
 
         
@@ -49,8 +52,10 @@ public class Window extends JFrame {
                 Integer row = table.rowAtPoint(evt.getPoint());
                 Integer col = table.columnAtPoint(evt.getPoint());                        
         
-                if(!drag)
-                    drag = newBoard.choseDragFigure(row, col);
+                if(!drag) {
+                    drag = newBoard.choseDragFigure(row, col, globalMove);
+                    label.setText(globalMove.getX().toString()+globalMove.getY().toString()+" "+globalMove.getLocalX().toString()+globalMove.getLocalY().toString());
+                }
 
                 else if(drag) {
                     Integer y = newBoard.getDragFigure().getPosition().getY();

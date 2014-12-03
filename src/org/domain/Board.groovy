@@ -58,9 +58,7 @@ class Board {
             return "black"
     }
     
-    FigurePosition globalMove = new FigurePosition(0,0)
-    
-    public Boolean choseDragFigure(Integer row, Integer col) {
+    public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
         Evaluation value = new Evaluation()

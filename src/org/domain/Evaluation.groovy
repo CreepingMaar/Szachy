@@ -249,7 +249,7 @@ class Evaluation {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(backupFigure, nowMove)
+            undoMove(board, backupFigure, nowMove)
             localTurn = board.getTurn()
         }
         
@@ -293,7 +293,7 @@ class Evaluation {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(backupFigure, nowMove)
+            undoMove(board, backupFigure, nowMove)
             localTurn = -board.getTurn()
         }
           
@@ -304,6 +304,7 @@ class Evaluation {
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
         Figure nowFigure
         Figure backupFigure
+        Figure beatenFigure
         
         while(itFigure.hasNext()) {
             nowFigure = itFigure.next()
@@ -312,12 +313,31 @@ class Evaluation {
             if(nowY == nowMove.getLocalY() && nowX == nowMove.getLocalX()) {
                 backupFigure = nowFigure
             }
+            if(nowY == nowMove.getY() && nowX == nowMove.getX()) {
+                beatenFigure = nowFigure
+            }
         }
         backupFigure.setPosition(nowMove)
+        
+        if(beatenFigure) {
+            String beat = new String(beatenFigure.getChessPiece())
+            nowMove.setBeatenPiece(beat)
+            beatenFigure.setChessPiece("")
+        }
         return backupFigure
     }
     
-    public void undoMove(Figure backupFigure, FigurePosition nowMove) {
+    public void undoMove(Board board, Figure backupFigure, FigurePosition nowMove) {
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
+        Figure nowFigure
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next()
+            Integer nowX = nowFigure.getPosition().getX()
+            Integer nowY = nowFigure.getPosition().getY()
+            if(nowFigure.getChessPiece() == "" && nowX == nowMove.getX() && nowY == nowMove.getY()) {
+                nowFigure.setChessPiece(nowMove.getBeatenPiece())
+            }
+        }
         Integer x = nowMove.getLocalX()
         Integer y = nowMove.getLocalY()
         backupFigure.getPosition().setX(x)
