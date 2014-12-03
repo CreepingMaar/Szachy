@@ -58,6 +58,8 @@ class Board {
             return "black"
     }
     
+    FigurePosition globalMove = new FigurePosition(0,0)
+    
     public Boolean choseDragFigure(Integer row, Integer col) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
@@ -65,7 +67,13 @@ class Board {
         String nowColor
         Integer x, y
         Integer temp
-        temp = value.maxi(this, 3)
+        temp = value.maxi(this, 3, globalMove)
+        while(it.hasNext()) {
+            now = it.next()
+            now.getPossibleMoves().clear()
+        }
+        value.generateGlobalMoves(this)
+        it = this.getFiguresOnBoard().iterator()
         while(it.hasNext()) {
             now = it.next();
             x = now.getPosition().getX()
@@ -73,7 +81,6 @@ class Board {
             nowColor = now.getColor()
             if(x==col && y==row && whosTurn(turn) == nowColor) {
                 dragFigure = now
-                value.evaluate(this)
                 return true;
             }
         };
@@ -104,6 +111,7 @@ class Board {
             if(now.getPosition().getX()==x && now.getPosition().getY()==y) { 
                 now.getPosition().setX(col);
                 now.getPosition().setY(row);
+                now.setStartPosition(false)
                 turn = -turn
             } 
         }

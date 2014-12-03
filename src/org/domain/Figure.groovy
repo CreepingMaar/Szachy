@@ -26,9 +26,9 @@ public class Figure {
         this.startPosition = true
     }
     
-    public void movePossibility() {
+    public void movePossibility(Board board) {
         if(chessPiece=="pawn") {
-            this.generatePawnMoves()
+            this.generatePawnMoves(board)
         }
         if(chessPiece=="rook") {
             this.generateRookMoves()
@@ -48,20 +48,54 @@ public class Figure {
         }
     }
     
-    public void generatePawnMoves() {
+    public void generatePawnMoves(Board board) {
         Integer x = position.getX()
         Integer y = position.getY()
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
+        Figure nowFigure
+        Integer nowX
+        Integer nowY
+        Boolean moveOne = true
+        String nowColor
         
         if(color=="white") {
-            if(y-1>=0)
-                possibleMoves.add(new FigurePosition(x, y-1))
-            if(startPosition)
+            if(y-1>=0) {
+                while(itFigure.hasNext()) {
+                    nowFigure = itFigure.next()
+                    nowX = nowFigure.getPosition().getX()
+                    nowY = nowFigure.getPosition().getY()
+                    nowColor = nowFigure.getColor()
+                    
+                    if(nowY == y-1 && (nowX == x+1 || nowX == x-1) && nowColor == "black")
+                        possibleMoves.add(new FigurePosition(nowX, nowY))
+                        
+                    if(nowY == y-1 && nowX == x)
+                        moveOne = false
+                }
+                if(moveOne)
+                    possibleMoves.add(new FigurePosition(x, y-1))
+            }
+            if(y==6)
                 possibleMoves.add(new FigurePosition(x, y-2))
         }
         else if(color=="black") {
-            if(y+1<=7)
-                possibleMoves.add(new FigurePosition(x, y+1))
-            if(startPosition)
+            if(y+1<=7) {
+                while(itFigure.hasNext()) {
+                    nowFigure = itFigure.next()
+                    nowX = nowFigure.getPosition().getX()
+                    nowY = nowFigure.getPosition().getY()
+                    nowColor = nowFigure.getColor()
+                    
+                    if(nowY == y+1 && (nowX == x+1 || nowX == x-1) && nowColor == "white")
+                        possibleMoves.add(new FigurePosition(nowX, nowY))
+                        
+                    if(nowY == y+1 && nowX == x)
+                        moveOne = false
+                }
+                if(moveOne)
+                    possibleMoves.add(new FigurePosition(x, y+1))
+            }
+            if(y==1)
                 possibleMoves.add(new FigurePosition(x, y+2))
         }
             
@@ -152,7 +186,7 @@ public class Figure {
         startPosition = false
     }
     
-    public void checkMoves(Board board) {
+    public void checkMoves(Board board, Integer localTurn) {
         Iterator<FigurePosition> itMove = this.getPossibleMoves().iterator()
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
         FigurePosition nowMove
@@ -160,6 +194,7 @@ public class Figure {
         
         while(itMove.hasNext()) {
             nowMove = itMove.next()
+            Boolean removed = false
             
             while(itFigure.hasNext()) {
                 nowFigure = itFigure.next()
@@ -169,23 +204,25 @@ public class Figure {
                 Integer xMove = nowMove.getX()
                 Integer yMove = nowMove.getY()
                 if(xPos == xMove && yPos == yMove)
-                    if(colorFigure == this.getColor())
-                        itMove.remove()
+                if(colorFigure == this.getColor() && removed == false) {
+                    itMove.remove()
+                    removed = true
+                }
             }
             itFigure = board.getFiguresOnBoard().iterator()
         }
         
         if(chessPiece == "bishop")
-            checkBishopMoves(board)
+            checkBishopMoves(board, localTurn)
         if(chessPiece == "rook")
-            checkRookMoves(board)
+            checkRookMoves(board, localTurn)
         if(chessPiece == "queen") {
-            checkRookMoves(board)
-            checkBishopMoves(board)
+            checkRookMoves(board, localTurn)
+            checkBishopMoves(board, localTurn)
         }
     }
     
-    public void checkRookMoves(Board board) {
+    public void checkRookMoves(Board board, Integer localTurn) {
         Integer i
         Integer x = this.position.getX()
         Integer y = this.position.getY()
@@ -204,10 +241,10 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(i==yPos && x==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(localTurn))
                     if(i>max)
                         max=i
-                if(i==yPos && x==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(-localTurn))
                     if(i-1>max)
                         max=i-1
             }
@@ -235,10 +272,10 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(i==xPos && y==yPos && nowColor == board.whosTurn(board.getTurn()))
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(localTurn))
                     if(i>max)
                         max=i
-                if(i==xPos && y==yPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(-localTurn))
                     if(i-1>max)
                         max=i-1
             }
@@ -266,10 +303,10 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(i==xPos && y==yPos && nowColor == board.whosTurn(board.getTurn()))
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(localTurn))
                     if(i<min)
                         min=i
-                if(i==xPos && y==yPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(i==xPos && y==yPos && nowColor == board.whosTurn(-localTurn))
                     if(i+1<min)
                         min=i+1        
             }
@@ -297,10 +334,10 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(i==yPos && x==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(localTurn))
                     if(i<min)
                         min=i
-                if(i==yPos && x==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(i==yPos && x==xPos && nowColor == board.whosTurn(-localTurn))
                     if(i+1<min)
                         min=i+1  
             }
@@ -319,7 +356,7 @@ public class Figure {
         }
     }
     
-    public void checkBishopMoves(Board board) {
+    public void checkBishopMoves(Board board, Integer localTurn) {
         Integer x = this.position.getX()
         Integer y = this.position.getY()
         Integer maxx
@@ -340,12 +377,12 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(localTurn))
                     if(i>maxx) {
                         maxx=i
                         maxy=j
                     }
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
                     if(i-1>maxx) {
                         maxx=i-1
                         maxy=j-1
@@ -386,12 +423,12 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(localTurn))
                     if(i<maxx) {
                         maxx=i
                         maxy=j
                     }
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
                     if(i+1<maxx) {
                         maxx=i+1
                         maxy=j+1
@@ -432,12 +469,12 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(localTurn))
                     if(j<maxy && i>maxx) {
                         maxx=i
                         maxy=j
                     }
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
                     if(j+1<maxx && i-1>maxx) {
                         maxx=i-1
                         maxy=j+1
@@ -478,12 +515,12 @@ public class Figure {
                 Integer yPos = nowFigure.getPosition().getY()
                 String nowColor = nowFigure.getColor()
                 
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(localTurn))
                     if(j>maxy && i<maxx) {
                         maxx=i
                         maxy=j
                     }
-                if(j==yPos && i==xPos && nowColor == board.whosTurn(-board.getTurn()))
+                if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
                     if(j-1>maxx && i+1<maxx) {
                         maxx=i+1
                         maxy=j-1

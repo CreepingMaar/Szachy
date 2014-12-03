@@ -6,6 +6,8 @@
 
 package org.domain
 
+import java.util.concurrent.CopyOnWriteArraySet
+
 /**
  *
  * @author Marek
@@ -86,19 +88,40 @@ class Evaluation {
         
     }
     
-    Set<FigurePosition> allMoves = new HashSet<FigurePosition>()
+    Integer localTurn
     
-    public void generateMoves(Board board) {
+    public void generateMoves(Board board, Set<FigurePosition> localMoves) {
         Iterator<Figure> it = board.getFiguresOnBoard().iterator();
+        FigurePosition nowMove
         Figure now
         String nowColor
         while(it.hasNext()) {
             now = it.next();
             nowColor = now.getColor()
-            if(board.whosTurn(board.getTurn()) == nowColor) {
-                now.movePossibility()
-                now.checkMoves(board)
-                allMoves.addAll(now.getPossibleMoves())
+            if(board.whosTurn(localTurn) == nowColor) {
+                now.movePossibility(board)
+                now.checkMoves(board, localTurn)
+                Iterator<FigurePosition> itMove = now.getPossibleMoves().iterator()
+                while(itMove.hasNext()) {
+                    nowMove = itMove.next()
+                    nowMove.setLocalX(now.getPosition().getX())
+                    nowMove.setLocalY(now.getPosition().getY())
+                }
+                localMoves.addAll(now.getPossibleMoves())
+            }
+        };
+    }
+    
+    public void generateGlobalMoves(Board board) {
+        Iterator<Figure> it = board.getFiguresOnBoard().iterator();
+        Figure now
+        String color
+        while(it.hasNext()) {
+            now = it.next();
+            color = now.getColor()
+            if(color == board.whosTurn(board.getTurn())) {
+                now.movePossibility(board)
+                now.checkMoves(board, board.getTurn())
             }
         };
 
@@ -126,74 +149,82 @@ class Evaluation {
                 
             if(chessPiece == "queen") {
                 if(color == "white") {
-                    scoreWhite += queenValue[x][y]
+                    scoreWhite += queenValue[y][x]
                     scoreWhite += figureValue[4]
                 }
                 else if (color == "black") {
-                    scoreBlack += queenValue[x][y]
+                    scoreBlack += queenValue[y][x]
                     scoreBlack += figureValue[4]
                 }
             }
             else if(chessPiece == "king") {
                 if(color == "white") {
-                    scoreWhite += kingValue[x][y]
+                    scoreWhite += kingValue[y][x]
                     scoreWhite += figureValue[5]
                 }
                 else if (color == "black") {
-                    scoreBlack += kingValue[x][y]
+                    scoreBlack += kingValue[y][x]
                     scoreBlack += figureValue[5]
                 }
             }
             else if(chessPiece == "rook") {
                 if(color == "white") {
-                    scoreWhite += rookValue[x][y]
+                    scoreWhite += rookValue[y][x]
                     scoreWhite += figureValue[3]
                 }
                 else if (color == "black") {
-                    scoreBlack += rookValue[x][y]
+                    scoreBlack += rookValue[y][x]
                     scoreBlack += figureValue[3]
                 }
             }
             else if(chessPiece == "pawn") {
                 if(color == "white") {
-                    scoreWhite += pawnValue[x][y]
+                    scoreWhite += pawnValue[y][x]
                     scoreWhite += figureValue[0]
                 }
                 else if (color == "black") {
-                    scoreBlack += pawnValue[x][y]
+                    scoreBlack += pawnValue[y][x]
                     scoreBlack += figureValue[0]
                 }
             }
             else if(chessPiece == "bishop") {
                 if(color == "white") {
-                    scoreWhite += bishopValue[x][y]
+                    scoreWhite += bishopValue[y][x]
                     scoreWhite += figureValue[2]
                 }
                 else if (color == "black") {
-                    scoreBlack += bishopValue[x][y]
+                    scoreBlack += bishopValue[y][x]
                     scoreBlack += figureValue[2]
                 }
             }
             else if(chessPiece == "knight") {
                 if(color == "white") {
-                    scoreWhite += knightValue[x][y]
+                    scoreWhite += knightValue[y][x]
                     scoreWhite += figureValue[1]
                 }
                 else if (color == "black") {
-                    scoreBlack += knightValue[x][y]
+                    scoreBlack += knightValue[y][x]
                     scoreBlack += figureValue[1]
                 }
             }
         }
         
-        return scoreWhite - scoreBlack
+        if(board.whosTurn(board.getTurn()) == "white")
+            return scoreWhite - scoreBlack
+        if(board.whosTurn(board.getTurn()) == "black")
+            return scoreBlack - scoreWhite
     }
     
-    public Integer maxi(Board board, Integer depth) {
+    def moves = new FigurePosition[3]
+    
+    
+    public Integer maxi(Board board, Integer depth, FigurePosition globalMove) {
+        localTurn = board.getTurn()
         if(depth<=0)
             return evaluate(board)
-        allMoves.clear()    
-        Integer bestScore = -1
+        Set<FigurePosition> localMoves = new CopyOnWriteArraySet<FigurePosition>()    
+        localMoves.clear()    
+        Integer bestScore = -100000
         FigurePosition bestMove
         Figure nowFigure;
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
@@ -201,31 +232,44 @@ class Evaluation {
             nowFigure = itFigure.next();
             nowFigure.getPossibleMoves().clear();
         }    
-        generateMoves(board)
-        FigurePosition nowMove
-        Iterator<FigurePosition> itMove = allMoves.iterator()
-        FigurePosition backupMove
-        Integer value
+        generateMoves(board, localMoves)
+        
+        Iterator<FigurePosition> itMove = localMoves.iterator()
         
         while(itMove.hasNext()) {
+            localTurn = board.getTurn()
+            FigurePosition nowMove
+            Figure backupFigure
+            Integer value
             nowMove = itMove.next()
-            backupMove = makeMove(nowMove, board)
-            value = mini(board, depth-1)
+            moves[depth-1] = nowMove
+            backupFigure = moveFigure(board, nowMove)
+            value = mini(board, depth-1, globalMove)
             if(value > bestScore) {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(nowMove, backupMove, board)
+            undoMove(backupFigure, nowMove)
+            localTurn = board.getTurn()
         }
         
+        if(depth == 3) {
+            globalMove.setX(bestMove.getX()) 
+            globalMove.setY(bestMove.getY())
+            globalMove.setLocalX(bestMove.getLocalX()) 
+            globalMove.setLocalY(bestMove.getLocalY())
+            
+        }
+            
         return bestScore
     }
     
-    public Integer mini(Board board, Integer depth) {
+    public Integer mini(Board board, Integer depth, FigurePosition globalMove) {
+        localTurn = -board.getTurn()
         if(depth<=0)
             return evaluate(board)
-            
-        allMoves.clear()     
+        Set<FigurePosition> localMoves = new CopyOnWriteArraySet<FigurePosition>()    
+        localMoves.clear()     
         Integer bestScore = 100000
         FigurePosition bestMove
         Figure nowFigure;
@@ -234,61 +278,49 @@ class Evaluation {
             nowFigure = itFigure.next();
             nowFigure.getPossibleMoves().clear();
         }      
-        generateMoves(board)
-        FigurePosition nowMove
-        Iterator<FigurePosition> itMove = allMoves.iterator()
-        FigurePosition backupMove
-        Integer value
-        
+        generateMoves(board, localMoves)
+        Iterator<FigurePosition> itMove = localMoves.iterator()
         while(itMove.hasNext()) {
+            localTurn = -board.getTurn()
+            FigurePosition nowMove
+            Figure backupFigure
+            Integer value            
             nowMove = itMove.next()
-            backupMove = makeMove(nowMove, board)
-            value = maxi(board, depth-1)
+            moves[depth-1] = nowMove
+            backupFigure = moveFigure(board, nowMove)
+            value = maxi(board, depth-1, globalMove)
             if(value < bestScore) {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(nowMove, backupMove, board)
+            undoMove(backupFigure, nowMove)
+            localTurn = -board.getTurn()
         }
+          
+        return bestScore
+    }
+    
+    public Figure moveFigure(Board board, FigurePosition nowMove) {
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
+        Figure nowFigure
+        Figure backupFigure
         
-        return bestMove
-    }
-    
-    public FigurePosition makeMove(FigurePosition nowMove, Board board) {
-        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
-        Figure nowFigure
-        FigurePosition nowFigureMove
-        Iterator<FigurePosition> itMove
-        FigurePosition backupMove
         while(itFigure.hasNext()) {
             nowFigure = itFigure.next()
-            itMove = nowFigure.getPossibleMoves().iterator()
-            while(itMove.hasNext()) {
-                nowFigureMove = itMove.next()
-                if(nowFigureMove == nowMove) {
-                    backupMove = nowFigure.getPosition()
-                    nowFigure.setPosition(nowMove)
-                }
-            }      
+            Integer nowX = nowFigure.getPosition().getX()
+            Integer nowY = nowFigure.getPosition().getY()
+            if(nowY == nowMove.getLocalY() && nowX == nowMove.getLocalX()) {
+                backupFigure = nowFigure
+            }
         }
-        return backupMove
+        backupFigure.setPosition(nowMove)
+        return backupFigure
     }
     
-    public void undoMove(FigurePosition nowMove, FigurePosition backupMove, Board board) {
-        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
-        Figure nowFigure
-        FigurePosition nowFigureMove
-        Iterator<FigurePosition> itMove
-        while(itFigure.hasNext()) {
-            nowFigure = itFigure.next()
-            itMove = nowFigure.getPossibleMoves().iterator()
-            while(itMove.hasNext()) {
-                nowFigureMove = itMove.next()
-                if(nowFigureMove == nowMove) {
-                    nowFigure.setPosition(backupMove)
-                }
-            }      
-        }
+    public void undoMove(Figure backupFigure, FigurePosition nowMove) {
+        Integer x = nowMove.getLocalX()
+        Integer y = nowMove.getLocalY()
+        backupFigure.getPosition().setX(x)
+        backupFigure.getPosition().setY(y)
     }
-	
 }

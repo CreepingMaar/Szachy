@@ -14,6 +14,8 @@ public class FigurePosition {
     
     Integer x
     Integer y
+    Integer localX
+    Integer localY
     
     FigurePosition(Integer x, Integer y) {
         this.x = x;
