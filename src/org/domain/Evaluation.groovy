@@ -239,7 +239,7 @@ class Evaluation {
         while(itMove.hasNext()) {
             localTurn = board.getTurn()
             FigurePosition nowMove
-            Figure backupFigure
+            def backupFigure = new Figure[2]
             Integer value
             nowMove = itMove.next()
             moves[depth-1] = nowMove
@@ -249,7 +249,7 @@ class Evaluation {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(board, backupFigure, nowMove)
+            undoMove(board, backupFigure[0], nowMove, backupFigure[1])
             localTurn = board.getTurn()
         }
         
@@ -283,8 +283,8 @@ class Evaluation {
         while(itMove.hasNext()) {
             localTurn = -board.getTurn()
             FigurePosition nowMove
-            Figure backupFigure
-            Integer value            
+            def backupFigure = new Figure[2]
+            Integer value
             nowMove = itMove.next()
             moves[depth-1] = nowMove
             backupFigure = moveFigure(board, nowMove)
@@ -293,19 +293,18 @@ class Evaluation {
                 bestScore = value
                 bestMove = nowMove
             }
-            undoMove(board, backupFigure, nowMove)
+            undoMove(board, backupFigure[0], nowMove, backupFigure[1])
             localTurn = -board.getTurn()
         }
           
         return bestScore
     }
     
-    public Figure moveFigure(Board board, FigurePosition nowMove) {
+    public Figure[] moveFigure(Board board, FigurePosition nowMove) {
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
         Figure nowFigure
         Figure backupFigure
-        Figure beatenFigure
-        
+        Figure beaten
         while(itFigure.hasNext()) {
             nowFigure = itFigure.next()
             Integer nowX = nowFigure.getPosition().getX()
@@ -314,30 +313,29 @@ class Evaluation {
                 backupFigure = nowFigure
             }
             if(nowY == nowMove.getY() && nowX == nowMove.getX()) {
-                beatenFigure = nowFigure
+                beaten = nowFigure
             }
         }
         backupFigure.setPosition(nowMove)
         
-        if(beatenFigure) {
-            String beat = new String(beatenFigure.getChessPiece())
-            nowMove.setBeatenPiece(beat)
-            beatenFigure.setChessPiece("")
+        if(beaten) {
+            board.getFiguresOffBoard().add(beaten)
+            board.getFiguresOnBoard().remove(beaten)
         }
-        return backupFigure
+        
+        def figures = new Figure[2]
+        figures[0] = backupFigure
+        figures[1] = beaten
+            
+        return figures
     }
     
-    public void undoMove(Board board, Figure backupFigure, FigurePosition nowMove) {
-        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
-        Figure nowFigure
-        while(itFigure.hasNext()) {
-            nowFigure = itFigure.next()
-            Integer nowX = nowFigure.getPosition().getX()
-            Integer nowY = nowFigure.getPosition().getY()
-            if(nowFigure.getChessPiece() == "" && nowX == nowMove.getX() && nowY == nowMove.getY()) {
-                nowFigure.setChessPiece(nowMove.getBeatenPiece())
-            }
+    public void undoMove(Board board, Figure backupFigure, FigurePosition nowMove, Figure beaten) {
+        if(beaten) {
+            board.getFiguresOnBoard().add(beaten)
+            board.getFiguresOffBoard().remove(beaten)
         }
+            
         Integer x = nowMove.getLocalX()
         Integer y = nowMove.getLocalY()
         backupFigure.getPosition().setX(x)

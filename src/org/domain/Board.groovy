@@ -59,13 +59,15 @@ class Board {
     }
     
     public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove) {
-        Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
         Evaluation value = new Evaluation()
         String nowColor
         Integer x, y
         Integer temp
+        Population population = new Population()
+        population.bubbleSort()
         temp = value.maxi(this, 3, globalMove)
+        Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         while(it.hasNext()) {
             now = it.next()
             now.getPossibleMoves().clear()

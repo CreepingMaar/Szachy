@@ -475,7 +475,7 @@ public class Figure {
                         maxy=j
                     }
                 if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
-                    if(j+1<maxx && i-1>maxx) {
+                    if(j+1<maxy && i-1>maxx) {
                         maxx=i-1
                         maxy=j+1
                     }
@@ -521,7 +521,7 @@ public class Figure {
                         maxy=j
                     }
                 if(j==yPos && i==xPos && nowColor == board.whosTurn(-localTurn))
-                    if(j-1>maxx && i+1<maxx) {
+                    if(j-1>maxy && i+1<maxx) {
                         maxx=i+1
                         maxy=j-1
                     }
