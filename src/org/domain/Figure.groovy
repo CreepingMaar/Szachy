@@ -60,6 +60,7 @@ public class Figure {
         
         if(color=="white") {
             if(y-1>=0) {
+                itFigure = board.getFiguresOnBoard().iterator()
                 while(itFigure.hasNext()) {
                     nowFigure = itFigure.next()
                     nowX = nowFigure.getPosition().getX()
@@ -75,11 +76,25 @@ public class Figure {
                 if(moveOne)
                     possibleMoves.add(new FigurePosition(x, y-1))
             }
-            if(y==6)
-                possibleMoves.add(new FigurePosition(x, y-2))
+            if(y==6) {
+                itFigure = board.getFiguresOnBoard().iterator()
+                Boolean addMove = true
+                while(itFigure.hasNext()) {
+                    nowFigure = itFigure.next()
+                    nowX = nowFigure.getPosition().getX()
+                    nowY = nowFigure.getPosition().getY()
+                    nowColor = nowFigure.getColor()
+                    
+                    if(nowX == x && (nowY == 4 || nowY == 5))
+                        addMove = false
+                }
+                if(addMove)
+                    possibleMoves.add(new FigurePosition(x, y-2))
+            }
         }
         else if(color=="black") {
             if(y+1<=7) {
+                itFigure = board.getFiguresOnBoard().iterator()
                 while(itFigure.hasNext()) {
                     nowFigure = itFigure.next()
                     nowX = nowFigure.getPosition().getX()
@@ -95,8 +110,21 @@ public class Figure {
                 if(moveOne)
                     possibleMoves.add(new FigurePosition(x, y+1))
             }
-            if(y==1)
-                possibleMoves.add(new FigurePosition(x, y+2))
+            if(y==1) {
+                itFigure = board.getFiguresOnBoard().iterator()
+                Boolean addMove = true
+                while(itFigure.hasNext()) {
+                    nowFigure = itFigure.next()
+                    nowX = nowFigure.getPosition().getX()
+                    nowY = nowFigure.getPosition().getY()
+                    nowColor = nowFigure.getColor()
+                    
+                    if(nowX == x && (nowY == 2 || nowY == 3))
+                        addMove = false
+                }
+                if(addMove)
+                    possibleMoves.add(new FigurePosition(x, y+2))
+            }
         }
             
     }

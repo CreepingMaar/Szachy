@@ -43,6 +43,8 @@ public class Window extends JFrame {
         frame.add(panel, BorderLayout.EAST);
         frame.add(scrollPane);
         frame.setVisible(true);
+        newBoard.playAi(globalMove, table);
+
         
 
         

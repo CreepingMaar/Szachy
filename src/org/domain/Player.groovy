@@ -17,6 +17,7 @@ class Player {
     String color
     Integer fitness
     Integer averageFitness
+    Integer probability
     
     Player() {
                 
@@ -24,9 +25,6 @@ class Player {
             Random random = new Random()
             genotype[i] = random.nextInt(101)-50
         }
-    }
-    
-    
-	
+    }  	
 }
 

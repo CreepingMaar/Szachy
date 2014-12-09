@@ -5,6 +5,9 @@
  */
 
 package org.domain
+
+import javax.swing.JTable
+
 /**
  *
  * @author Marek
@@ -58,15 +61,65 @@ class Board {
             return "black"
     }
     
+    public void playAi(FigurePosition globalMove, JTable table) {
+        Integer end=0;
+        
+        while(end==0) {
+            end = this.playTurnAi(globalMove, table);
+            if(end==1)
+                System.out.println("Check mate!");
+            if(end==2)
+                System.out.println("Pat!");
+        }
+    }
+    
+    public Integer playTurnAi(FigurePosition globalMove, JTable table) {
+        Evaluation value = new Evaluation()
+        Iterator<Figure> it = this.getFiguresOnBoard().iterator()
+        Figure now
+        String imagePath
+        while(it.hasNext()) {
+            now = it.next()
+            now.getPossibleMoves().clear()
+        }
+        value.generateGlobalMoves(this)
+        Population population = new Population()
+        population.setValues(value, 0, 1)
+        population.bubbleSort()
+        Integer temp
+        temp = value.maxi(this, 3, globalMove, -100000, 100000)
+        if(globalMove.getX() == -1 && globalMove.getY() == -1)
+            return 1
+        if(globalMove.getX() == -2 && globalMove.getY() == -2)
+            return 2
+        it = this.getFiguresOnBoard().iterator()
+        while(it.hasNext()) {
+            now = it.next()
+            now.getPossibleMoves().clear()
+        }
+        value.generateGlobalMoves(this)
+        it = this.getFiguresOnBoard().iterator()
+        while(it.hasNext()) {
+            now = it.next()
+            if(now.getPosition().getY() == globalMove.getLocalY() && now.getPosition().getX() == globalMove.getLocalX())
+                dragFigure = now
+        }
+        dropFigure(globalMove.getY(), globalMove.getX())
+        setDraggedFigure(globalMove.getY(), globalMove.getX())
+        table.setValueAt(null, globalMove.getLocalY(), globalMove.getLocalX())
+        table.setValueAt(dragFigure.getImagePath(), globalMove.getY(), globalMove.getX())
+        return 0
+    }
+    
     public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove) {
         Figure now
         Evaluation value = new Evaluation()
         String nowColor
         Integer x, y
         Integer temp
-        Population population = new Population()
-        population.bubbleSort()
-        temp = value.maxi(this, 3, globalMove)
+        temp = value.maxi(this, 3, globalMove, -100000, 100000)
+        if(globalMove.getX() == -1 && globalMove.getY() == -1)
+            println "Check Mate"
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         while(it.hasNext()) {
             now = it.next()
@@ -116,7 +169,43 @@ class Board {
             } 
         }
     }
+    public Figure whosKing(Board board, Integer localTurn) {
+        Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
+        Figure nowFigure
+        Figure myKing
+        
+        while(itFigure.hasNext()) {
+            nowFigure = itFigure.next()
+            String nowColor = nowFigure.getColor()
+            String nowPiece = nowFigure.getChessPiece()
+            if(nowColor == board.whosTurn(localTurn) && nowPiece == "king")
+                myKing = nowFigure
+        }
+        return myKing
+    }
     
-    
+    public Boolean checkCheck(Board board, Integer localTurn, Figure king) {
+        Integer kingX = king.getPosition().getX()
+        Integer kingY = king.getPosition().getY()
+        Iterator<Figure> it = board.getFiguresOnBoard().iterator();
+        FigurePosition nowMove
+        Figure now
+        String nowColor
+        while(it.hasNext()) {
+            now = it.next();
+            nowColor = now.getColor()
+            if(board.whosTurn(-localTurn) == nowColor) {
+                now.movePossibility(board)
+                now.checkMoves(board, -localTurn)
+                Iterator<FigurePosition> itMove = now.getPossibleMoves().iterator()
+                while(itMove.hasNext()) {
+                    nowMove = itMove.next()
+                    if(nowMove.getX() == kingX && nowMove.getY() == kingY)
+                        return true
+                }
+            }
+        }
+        return false
+    }
 }
 
