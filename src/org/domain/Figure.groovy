@@ -91,6 +91,10 @@ public class Figure {
                 if(addMove)
                     possibleMoves.add(new FigurePosition(x, y-2))
             }
+            if(y==0) {
+                this.setChessPiece("queen")
+                this.setImagePath("src/org/icons/chess-2-xl.png")
+            }
         }
         else if(color=="black") {
             if(y+1<=7) {
@@ -124,6 +128,10 @@ public class Figure {
                 }
                 if(addMove)
                     possibleMoves.add(new FigurePosition(x, y+2))
+            }
+            if(y==7) {
+                this.setChessPiece("queen")
+                this.setImagePath("src/org/icons/chess-16-xl.png")
             }
         }
             

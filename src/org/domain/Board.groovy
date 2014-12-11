@@ -63,18 +63,48 @@ class Board {
     
     public void playAi(FigurePosition globalMove, JTable table) {
         Integer end=0;
+        Population population = new Population()
+        Evaluation value = new Evaluation()
+        FigurePosition repeatedPosition
+        population.setValues(value, 0, 1)
+        def lastMoves = new Integer[6][2]
         
         while(end==0) {
-            end = this.playTurnAi(globalMove, table);
+            end = this.playTurnAi(globalMove, table, value, repeatedPosition);
+            repeatedPosition = null;
+            repeatedPosition = reapetedMoves(globalMove, lastMoves)
+            
             if(end==1)
                 System.out.println("Check mate!");
             if(end==2)
                 System.out.println("Pat!");
         }
+        population.bubbleSort()
     }
     
-    public Integer playTurnAi(FigurePosition globalMove, JTable table) {
-        Evaluation value = new Evaluation()
+    public FigurePosition reapetedMoves(FigurePosition globalMove, Integer[][] lastMoves) {
+        FigurePosition repeatedPosition
+        lastMoves[0][0] = lastMoves[1][0]
+        lastMoves[1][0] = lastMoves[2][0]
+        lastMoves[2][0] = lastMoves[3][0]
+        lastMoves[3][0] = lastMoves[4][0]
+        lastMoves[4][0] = lastMoves[5][0]
+        lastMoves[5][0] = globalMove.getLocalX()
+        lastMoves[0][1] = lastMoves[1][1]
+        lastMoves[1][1] = lastMoves[2][1]
+        lastMoves[2][1] = lastMoves[3][1]
+        lastMoves[3][1] = lastMoves[4][1]
+        lastMoves[4][1] = lastMoves[5][1]
+        lastMoves[5][1] = globalMove.getLocalY()
+        if(lastMoves[0][0] == lastMoves[4][0] && lastMoves[1][0] == lastMoves[5][0] && lastMoves[0][1] == lastMoves[4][1] && lastMoves[1][1] == lastMoves[5][1]) {
+            repeatedPosition = new FigurePosition(lastMoves[2][0], lastMoves[2][1])
+            repeatedPosition.setLocalX(lastMoves[0][0])
+            repeatedPosition.setLocalY(lastMoves[0][1])
+        }
+        return repeatedPosition
+    }
+    
+    public Integer playTurnAi(FigurePosition globalMove, JTable table, Evaluation value, FigurePosition repeatedMove) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator()
         Figure now
         String imagePath
@@ -83,11 +113,8 @@ class Board {
             now.getPossibleMoves().clear()
         }
         value.generateGlobalMoves(this)
-        Population population = new Population()
-        population.setValues(value, 0, 1)
-        population.bubbleSort()
         Integer temp
-        temp = value.maxi(this, 3, globalMove, -100000, 100000)
+        temp = value.maxi(this, 3, globalMove, -100000, 100000, repeatedMove)
         if(globalMove.getX() == -1 && globalMove.getY() == -1)
             return 1
         if(globalMove.getX() == -2 && globalMove.getY() == -2)

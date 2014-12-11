@@ -162,61 +162,61 @@ class Evaluation {
                 
             if(chessPiece == "queen") {
                 if(color == "white") {
-                    scoreWhite += queenValue[y][x]
+                    scoreWhite += whiteQueenValue[y][x]
                     scoreWhite += figureValue[4]
                 }
                 else if (color == "black") {
-                    scoreBlack += queenValue[y][x]
+                    scoreBlack += blackQueenValue[y][x]
                     scoreBlack += figureValue[4]
                 }
             }
             else if(chessPiece == "king") {
                 if(color == "white") {
-                    scoreWhite += kingValue[y][x]
+                    scoreWhite += whiteKingValue[y][x]
                     scoreWhite += figureValue[5]
                 }
                 else if (color == "black") {
-                    scoreBlack += kingValue[y][x]
+                    scoreBlack += blackKingValue[y][x]
                     scoreBlack += figureValue[5]
                 }
             }
             else if(chessPiece == "rook") {
                 if(color == "white") {
-                    scoreWhite += rookValue[y][x]
+                    scoreWhite += whiteRookValue[y][x]
                     scoreWhite += figureValue[3]
                 }
                 else if (color == "black") {
-                    scoreBlack += rookValue[y][x]
+                    scoreBlack += blackRookValue[y][x]
                     scoreBlack += figureValue[3]
                 }
             }
             else if(chessPiece == "pawn") {
                 if(color == "white") {
-                    scoreWhite += pawnValue[y][x]
+                    scoreWhite += whitePawnValue[y][x]
                     scoreWhite += figureValue[0]
                 }
                 else if (color == "black") {
-                    scoreBlack += pawnValue[y][x]
+                    scoreBlack += blackPawnValue[y][x]
                     scoreBlack += figureValue[0]
                 }
             }
             else if(chessPiece == "bishop") {
                 if(color == "white") {
-                    scoreWhite += bishopValue[y][x]
+                    scoreWhite += whiteBishopValue[y][x]
                     scoreWhite += figureValue[2]
                 }
                 else if (color == "black") {
-                    scoreBlack += bishopValue[y][x]
+                    scoreBlack += blackBishopValue[y][x]
                     scoreBlack += figureValue[2]
                 }
             }
             else if(chessPiece == "knight") {
                 if(color == "white") {
-                    scoreWhite += knightValue[y][x]
+                    scoreWhite += whiteKnightValue[y][x]
                     scoreWhite += figureValue[1]
                 }
                 else if (color == "black") {
-                    scoreBlack += knightValue[y][x]
+                    scoreBlack += blackKnightValue[y][x]
                     scoreBlack += figureValue[1]
                 }
             }
@@ -231,7 +231,7 @@ class Evaluation {
     def moves = new FigurePosition[3]
     
     
-    public Integer maxi(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta) {
+    public Integer maxi(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta, FigurePosition repeatedMove) {
         localTurn = board.getTurn()
         if(depth<=0)
             return evaluate(board)
@@ -262,16 +262,28 @@ class Evaluation {
             if(depth == 3) {
                 Boolean isCheck
                 isCheck = board.checkCheck(board, localTurn, board.whosKing(board, localTurn))
-                if(!isCheck) {
-                    value = mini(board, depth-1, globalMove, alfa, beta)
-                    if(value > alfa) {
-                        alfa = value
-                        bestMove = nowMove
+                if(repeatedMove == null) {
+                    if(!isCheck) {
+                        value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
+                        if(value > alfa) {
+                            alfa = value
+                            bestMove = nowMove
+                        }
                     }
                 }
+                else if(repeatedMove)
+                        if(nowMove.getX() != repeatedMove.getX() && nowMove.getY() != repeatedMove.getY() && nowMove.getLocalX() != repeatedMove.getLocalX() && nowMove.getLocalY() != repeatedMove.getLocalY()) {
+                            if(!isCheck) {
+                                value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
+                                if(value > alfa) {
+                                    alfa = value
+                                    bestMove = nowMove
+                                }
+                            }
+                        }
             }
             else {
-                value = mini(board, depth-1, globalMove, alfa, beta)
+                value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
                 if(value > alfa) {
                     alfa = value
                     bestMove = nowMove
@@ -304,7 +316,7 @@ class Evaluation {
         return alfa
     }
     
-    public Integer mini(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta) {
+    public Integer mini(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta, FigurePosition repeatedMove) {
         localTurn = -board.getTurn()
         if(depth<=0)
             return evaluate(board)
@@ -327,7 +339,7 @@ class Evaluation {
             nowMove = itMove.next()
             moves[depth-1] = nowMove
             backupFigure = moveFigure(board, nowMove)
-            value = maxi(board, depth-1, globalMove, alfa, beta)
+            value = maxi(board, depth-1, globalMove, alfa, beta, repeatedMove)
             if(value < beta) {
                 beta = value
                 bestMove = nowMove
