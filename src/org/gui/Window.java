@@ -25,12 +25,7 @@ public class Window extends JFrame {
         Board newBoard = new Board();
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         JTable table = new JTable(newBoard.getWidth(), newBoard.getHeight());
-        newBoard.getFiguresOnBoard().forEach((string) -> {
-            Integer x = string.getPosition().getX();
-            Integer y = string.getPosition().getY();
-            String imagePath = string.getImagePath();
-            table.setValueAt(imagePath, y, x);
-        });
+
         table.setRowSelectionAllowed(false);
         table.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         table.setAutoResizeMode(0);
@@ -43,11 +38,21 @@ public class Window extends JFrame {
         frame.add(panel, BorderLayout.EAST);
         frame.add(scrollPane);
         frame.setVisible(true);
-        newBoard.playAi(globalMove, table);
-
-        
-
-        
+        for(int i = 0; i < 30; i++) {
+            Integer moveCounter = 0;
+            newBoard.resetBoard();
+            for(int j = 0; j < newBoard.getWidth(); j++)
+                for(int k = 0; k < newBoard.getHeight(); k++)
+                    table.setValueAt(null, k, j);
+            newBoard.getFiguresOnBoard().forEach((string) -> {
+                Integer x = string.getPosition().getX();
+                Integer y = string.getPosition().getY();
+                String imagePath = string.getImagePath();
+                table.setValueAt(imagePath, y, x);
+            });
+            newBoard.playAi(globalMove, table, moveCounter);
+        }
+          
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {

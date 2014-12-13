@@ -23,6 +23,7 @@ class Board {
     Figure dragFigure
     Integer turn
     String turnColor
+    Integer endOfGame
     
     
     public Board () {
@@ -61,23 +62,55 @@ class Board {
             return "black"
     }
     
-    public void playAi(FigurePosition globalMove, JTable table) {
-        Integer end=0;
+    public void resetBoard() {
+        figuresOnBoard.clear()
+        figuresOffBoard.clear()
+        turn = 1
+        width = 8
+        height = 8
+        cellHeight = 80
+        cellWidth = 80
+        dragFigure = new Figure("blank", "", "", new FigurePosition(0, 0))
+        for(int i = 0; i < width; i++) {
+            figuresOnBoard.add(new Figure("black", "src/org/icons/chess-666-xl.png", "pawn", new FigurePosition(i, 1)))
+            figuresOnBoard.add(new Figure("white", "src/org/icons/chess-8-xl.png", "pawn", new FigurePosition(i, 6)))
+        }
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(0, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(7, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(0, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(7, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(1, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(6, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(1, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(6, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(2, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(5, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(2, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(5, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-16-xl.png", "queen", new FigurePosition(3, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-26-xl.png", "king", new FigurePosition(4, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-2-xl.png", "queen", new FigurePosition(3, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
+    }
+    
+    public void playAi(FigurePosition globalMove, JTable table, Integer moveCounter) {
+        String end = "Valid";
         Population population = new Population()
         Evaluation value = new Evaluation()
         FigurePosition repeatedPosition
         population.setValues(value, 0, 1)
         def lastMoves = new Integer[6][2]
         
-        while(end==0) {
+        while(end=="Valid") {
             end = this.playTurnAi(globalMove, table, value, repeatedPosition);
+            moveCounter++
             repeatedPosition = null;
             repeatedPosition = reapetedMoves(globalMove, lastMoves)
             
-            if(end==1)
-                System.out.println("Check mate!");
-            if(end==2)
-                System.out.println("Pat!");
+            if(moveCounter > 200)
+                end = "Pat";
+            if(end != "Valid")
+                System.out.println(end);
         }
         population.bubbleSort()
     }
@@ -104,7 +137,7 @@ class Board {
         return repeatedPosition
     }
     
-    public Integer playTurnAi(FigurePosition globalMove, JTable table, Evaluation value, FigurePosition repeatedMove) {
+    public String playTurnAi(FigurePosition globalMove, JTable table, Evaluation value, FigurePosition repeatedMove) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator()
         Figure now
         String imagePath
@@ -135,7 +168,7 @@ class Board {
         setDraggedFigure(globalMove.getY(), globalMove.getX())
         table.setValueAt(null, globalMove.getLocalY(), globalMove.getLocalX())
         table.setValueAt(dragFigure.getImagePath(), globalMove.getY(), globalMove.getX())
-        return 0
+        return "Valid"
     }
     
     public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove) {
