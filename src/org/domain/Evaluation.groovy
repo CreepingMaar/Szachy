@@ -229,6 +229,14 @@ class Evaluation {
     }
     
     def moves = new FigurePosition[3]
+
+    public Boolean moveEquals(FigurePosition first, FigurePosition second) {
+        if(first.getY().equals(second.getY())
+        && first.getX().equals(second.getX())
+        && first.getLocalY().equals(second.getLocalY())
+        && first.getLocalX().equals(second.getLocalX()))
+            return true
+    }
     
     
     public Integer maxi(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta, FigurePosition repeatedMove) {
@@ -254,33 +262,26 @@ class Evaluation {
         while(itMove.hasNext()) {
             localTurn = board.getTurn()
             FigurePosition nowMove
-            def backupFigure = new Figure[2]
             Integer value
             nowMove = itMove.next()
             moves[depth-1] = nowMove
-            backupFigure = moveFigure(board, nowMove)
+            Figure[] backupFigure = moveFigure(board, nowMove)
             if(depth == 3) {
                 Boolean isCheck
                 isCheck = board.checkCheck(board, localTurn, board.whosKing(board, localTurn))
-                if(repeatedMove == null) {
-                    if(!isCheck) {
-                        value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
-                        if(value > alfa) {
-                            alfa = value
-                            bestMove = nowMove
-                        }
+                if (!isCheck && !repeatedMove) {
+                    value = mini(board, depth - 1, globalMove, alfa, beta, repeatedMove)
+                    if (value > alfa) {
+                        alfa = value
+                        bestMove = nowMove
+                    }
+                } else if(!isCheck && !moveEquals(repeatedMove, nowMove)) {
+                    value = mini(board, depth - 1, globalMove, alfa, beta, repeatedMove)
+                    if (value > alfa) {
+                        alfa = value
+                        bestMove = nowMove
                     }
                 }
-                else if(repeatedMove)
-                        if(nowMove.getX() != repeatedMove.getX() && nowMove.getY() != repeatedMove.getY() && nowMove.getLocalX() != repeatedMove.getLocalX() && nowMove.getLocalY() != repeatedMove.getLocalY()) {
-                            if(!isCheck) {
-                                value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
-                                if(value > alfa) {
-                                    alfa = value
-                                    bestMove = nowMove
-                                }
-                            }
-                        }
             }
             else {
                 value = mini(board, depth-1, globalMove, alfa, beta, repeatedMove)
@@ -321,8 +322,7 @@ class Evaluation {
         if(depth<=0)
             return evaluate(board)
         Set<FigurePosition> localMoves = new HashSet<FigurePosition>()    
-        localMoves.clear()     
-        FigurePosition bestMove
+        localMoves.clear()
         Figure nowFigure;
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
         while(itFigure.hasNext()) {
@@ -334,15 +334,13 @@ class Evaluation {
         while(itMove.hasNext()) {
             localTurn = -board.getTurn()
             FigurePosition nowMove
-            def backupFigure = new Figure[2]
             Integer value
             nowMove = itMove.next()
             moves[depth-1] = nowMove
-            backupFigure = moveFigure(board, nowMove)
+            Figure[] backupFigure = moveFigure(board, nowMove)
             value = maxi(board, depth-1, globalMove, alfa, beta, repeatedMove)
             if(value < beta) {
                 beta = value
-                bestMove = nowMove
             }
             undoMove(board, backupFigure[0], nowMove, backupFigure[1])
             localTurn = -board.getTurn()

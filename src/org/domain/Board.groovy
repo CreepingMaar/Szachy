@@ -20,6 +20,7 @@ class Board {
     Integer cellWidth
     Set<Figure> figuresOnBoard = new HashSet<Figure>()
     Set<Figure> figuresOffBoard = new HashSet<Figure>()
+    List<FigurePosition> movesDone = new ArrayList<FigurePosition>()
     Figure dragFigure
     Integer turn
     String turnColor
@@ -63,6 +64,7 @@ class Board {
     }
     
     public void resetBoard() {
+        movesDone.clear()
         figuresOnBoard.clear()
         figuresOffBoard.clear()
         turn = 1
@@ -99,13 +101,13 @@ class Board {
         Evaluation value = new Evaluation()
         FigurePosition repeatedPosition
         population.setValues(value, 0, 1)
-        def lastMoves = new Integer[6][2]
         
         while(end=="Valid") {
+            repeatedPosition = checkRepeated()
             end = this.playTurnAi(globalMove, table, value, repeatedPosition);
             moveCounter++
-            repeatedPosition = null;
-            repeatedPosition = reapetedMoves(globalMove, lastMoves)
+
+            addMadeMove(globalMove)
             
             if(moveCounter > 200)
                 end = "Pat";
@@ -115,26 +117,27 @@ class Board {
         population.bubbleSort()
     }
     
-    public FigurePosition reapetedMoves(FigurePosition globalMove, Integer[][] lastMoves) {
-        FigurePosition repeatedPosition
-        lastMoves[0][0] = lastMoves[1][0]
-        lastMoves[1][0] = lastMoves[2][0]
-        lastMoves[2][0] = lastMoves[3][0]
-        lastMoves[3][0] = lastMoves[4][0]
-        lastMoves[4][0] = lastMoves[5][0]
-        lastMoves[5][0] = globalMove.getLocalX()
-        lastMoves[0][1] = lastMoves[1][1]
-        lastMoves[1][1] = lastMoves[2][1]
-        lastMoves[2][1] = lastMoves[3][1]
-        lastMoves[3][1] = lastMoves[4][1]
-        lastMoves[4][1] = lastMoves[5][1]
-        lastMoves[5][1] = globalMove.getLocalY()
-        if(lastMoves[0][0] == lastMoves[4][0] && lastMoves[1][0] == lastMoves[5][0] && lastMoves[0][1] == lastMoves[4][1] && lastMoves[1][1] == lastMoves[5][1]) {
-            repeatedPosition = new FigurePosition(lastMoves[2][0], lastMoves[2][1])
-            repeatedPosition.setLocalX(lastMoves[0][0])
-            repeatedPosition.setLocalY(lastMoves[0][1])
-        }
-        return repeatedPosition
+    public void addMadeMove(FigurePosition globalMove) {
+        FigurePosition anotherMove = new FigurePosition(globalMove.getX(), globalMove.getY())
+        anotherMove.setLocalX(globalMove.getLocalX())
+        anotherMove.setLocalY(globalMove.getLocalY())
+        movesDone.add(anotherMove)
+    }
+
+    public FigurePosition checkRepeated() {
+        if(movesDone.size() >= 10)
+            if(isRepeated(movesDone.get(movesDone.size()-2), movesDone.get(movesDone.size()-4))
+            && isRepeated(movesDone.get(movesDone.size()-4), movesDone.get(movesDone.size()-6))
+            && isRepeated(movesDone.get(movesDone.size()-6), movesDone.get(movesDone.size()-8)))
+                return movesDone.get(movesDone.size()-4)
+    }
+
+    public Boolean isRepeated(FigurePosition first, FigurePosition second) {
+        if(first.getY().equals(second.getLocalY())
+        && first.getX().equals(second.getLocalX())
+        && first.getLocalY().equals(second.getY())
+        && first.getLocalX().equals(second.getX()))
+            return true
     }
     
     public String playTurnAi(FigurePosition globalMove, JTable table, Evaluation value, FigurePosition repeatedMove) {
@@ -232,16 +235,14 @@ class Board {
     public Figure whosKing(Board board, Integer localTurn) {
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator()
         Figure nowFigure
-        Figure myKing
         
         while(itFigure.hasNext()) {
             nowFigure = itFigure.next()
             String nowColor = nowFigure.getColor()
             String nowPiece = nowFigure.getChessPiece()
             if(nowColor == board.whosTurn(localTurn) && nowPiece == "king")
-                myKing = nowFigure
+                return nowFigure
         }
-        return myKing
     }
     
     public Boolean checkCheck(Board board, Integer localTurn, Figure king) {
@@ -255,6 +256,7 @@ class Board {
             now = it.next();
             nowColor = now.getColor()
             if(board.whosTurn(-localTurn) == nowColor) {
+                now.getPossibleMoves().clear();
                 now.movePossibility(board)
                 now.checkMoves(board, -localTurn)
                 Iterator<FigurePosition> itMove = now.getPossibleMoves().iterator()
