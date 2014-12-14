@@ -38,6 +38,9 @@ public class Window extends JFrame {
         frame.add(panel, BorderLayout.EAST);
         frame.add(scrollPane);
         frame.setVisible(true);
+        Population population = new Population();
+        Evaluation value = new Evaluation();
+        population.setValues(value, 0, 1);
         for(int i = 0; i < 30; i++) {
             Integer moveCounter = 0;
             newBoard.resetBoard();
@@ -50,7 +53,7 @@ public class Window extends JFrame {
                 String imagePath = string.getImagePath();
                 table.setValueAt(imagePath, y, x);
             });
-            newBoard.playAi(globalMove, table, moveCounter);
+            newBoard.playAi(globalMove, table, moveCounter, population, value);
         }
           
         table.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -227,8 +227,6 @@ class Evaluation {
         if(board.whosTurn(board.getTurn()) == "black")
             return scoreBlack - scoreWhite
     }
-    
-    def moves = new FigurePosition[3]
 
     public Boolean moveEquals(FigurePosition first, FigurePosition second) {
         if(first.getY().equals(second.getY())
@@ -240,42 +238,30 @@ class Evaluation {
     
     
     public Integer maxi(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta, FigurePosition repeatedMove) {
-        localTurn = board.getTurn()
         if(depth<=0)
             return evaluate(board)
-        Set<FigurePosition> localMoves = new HashSet<FigurePosition>()    
-        localMoves.clear()  
+        localTurn = board.getTurn()
+        Set<FigurePosition> localMoves = new HashSet<FigurePosition>()
         FigurePosition bestMove
-        Figure nowFigure;
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
         while(itFigure.hasNext()) {
-            nowFigure = itFigure.next();
+            Figure nowFigure = itFigure.next();
             nowFigure.getPossibleMoves().clear();
         }    
         generateMoves(board, localMoves)
-        Boolean isNow=true
+        Boolean isNow = false
         if(depth == 3)
             isNow = board.checkCheck(board, localTurn, board.whosKing(board, localTurn))
         
         Iterator<FigurePosition> itMove = localMoves.iterator()
         
         while(itMove.hasNext()) {
-            localTurn = board.getTurn()
-            FigurePosition nowMove
             Integer value
-            nowMove = itMove.next()
-            moves[depth-1] = nowMove
+            FigurePosition nowMove = itMove.next()
             Figure[] backupFigure = moveFigure(board, nowMove)
             if(depth == 3) {
-                Boolean isCheck
-                isCheck = board.checkCheck(board, localTurn, board.whosKing(board, localTurn))
-                if (!isCheck && !repeatedMove) {
-                    value = mini(board, depth - 1, globalMove, alfa, beta, repeatedMove)
-                    if (value > alfa) {
-                        alfa = value
-                        bestMove = nowMove
-                    }
-                } else if(!isCheck && !moveEquals(repeatedMove, nowMove)) {
+                Boolean isCheck = board.checkCheck(board, localTurn, board.whosKing(board, localTurn))
+                if ((!isCheck && !repeatedMove) || (!isCheck && !moveEquals(repeatedMove, nowMove)) || (repeatedMove && moveEquals(repeatedMove, nowMove) && !isCheck && isNow)) {
                     value = mini(board, depth - 1, globalMove, alfa, beta, repeatedMove)
                     if (value > alfa) {
                         alfa = value
@@ -318,27 +304,21 @@ class Evaluation {
     }
     
     public Integer mini(Board board, Integer depth, FigurePosition globalMove, int alfa, int beta, FigurePosition repeatedMove) {
-        localTurn = -board.getTurn()
         if(depth<=0)
             return evaluate(board)
-        Set<FigurePosition> localMoves = new HashSet<FigurePosition>()    
-        localMoves.clear()
-        Figure nowFigure;
+        localTurn = -board.getTurn()
+        Set<FigurePosition> localMoves = new HashSet<FigurePosition>()
         Iterator<Figure> itFigure = board.getFiguresOnBoard().iterator();
         while(itFigure.hasNext()) {
-            nowFigure = itFigure.next();
+            Figure nowFigure = itFigure.next();
             nowFigure.getPossibleMoves().clear();
         }      
         generateMoves(board, localMoves)
         Iterator<FigurePosition> itMove = localMoves.iterator()
         while(itMove.hasNext()) {
-            localTurn = -board.getTurn()
-            FigurePosition nowMove
-            Integer value
-            nowMove = itMove.next()
-            moves[depth-1] = nowMove
+            FigurePosition nowMove = itMove.next()
             Figure[] backupFigure = moveFigure(board, nowMove)
-            value = maxi(board, depth-1, globalMove, alfa, beta, repeatedMove)
+            Integer value = maxi(board, depth-1, globalMove, alfa, beta, repeatedMove)
             if(value < beta) {
                 beta = value
             }

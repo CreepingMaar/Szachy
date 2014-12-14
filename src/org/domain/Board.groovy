@@ -95,15 +95,11 @@ class Board {
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
     }
     
-    public void playAi(FigurePosition globalMove, JTable table, Integer moveCounter) {
+    public void playAi(FigurePosition globalMove, JTable table, Integer moveCounter, Population population, Evaluation value) {
         String end = "Valid";
-        Population population = new Population()
-        Evaluation value = new Evaluation()
-        FigurePosition repeatedPosition
-        population.setValues(value, 0, 1)
         
         while(end=="Valid") {
-            repeatedPosition = checkRepeated()
+            FigurePosition repeatedPosition = checkRepeated()
             end = this.playTurnAi(globalMove, table, value, repeatedPosition);
             moveCounter++
 
@@ -114,7 +110,7 @@ class Board {
             if(end != "Valid")
                 System.out.println(end);
         }
-        population.bubbleSort()
+        //population.bubbleSort()
     }
     
     public void addMadeMove(FigurePosition globalMove) {
