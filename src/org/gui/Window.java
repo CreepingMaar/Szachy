@@ -40,21 +40,38 @@ public class Window extends JFrame {
         frame.setVisible(true);
         Population population = new Population();
         Evaluation value = new Evaluation();
-        population.setValues(value, 0, 1);
-        for(int i = 0; i < 30; i++) {
-            Integer moveCounter = 0;
-            newBoard.resetBoard();
-            for(int j = 0; j < newBoard.getWidth(); j++)
-                for(int k = 0; k < newBoard.getHeight(); k++)
-                    table.setValueAt(null, k, j);
-            newBoard.getFiguresOnBoard().forEach((string) -> {
-                Integer x = string.getPosition().getX();
-                Integer y = string.getPosition().getY();
-                String imagePath = string.getImagePath();
-                table.setValueAt(imagePath, y, x);
-            });
-            newBoard.playAi(globalMove, table, moveCounter, population, value);
-        }
+
+        /*for(int i = 0; i < 15; i++) {
+            for(int j = i + 1; j < 15; j++) {
+                population.setValues(value, i, j);
+                Integer moveCounter = 0;
+                newBoard.resetBoard();
+                for(int l = 0; l < newBoard.getWidth(); l++)
+                    for(int k = 0; k < newBoard.getHeight(); k++)
+                        table.setValueAt(null, k, l);
+                newBoard.getFiguresOnBoard().forEach((string) -> {
+                    Integer x = string.getPosition().getX();
+                    Integer y = string.getPosition().getY();
+                    String imagePath = string.getImagePath();
+                    table.setValueAt(imagePath, y, x);
+                });
+                Integer result = newBoard.playAi(globalMove, table, moveCounter, population, value);
+                if(result == 0) {
+                    population.getPlayer(i).addFitness(1);
+                    population.getPlayer(j).addFitness(1);
+                } else if(result == 1) {
+                    population.getPlayer(j).addFitness(2);
+                } else if(result == -1) {
+                    population.getPlayer(i).addFitness(2);
+                }
+            }
+        }*/
+        population.averageScore();
+        //population.bubbleSort();
+        population.probability();
+        population.distribution();
+        population.crossoverIndex();
+        System.out.print("ehh");
           
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override

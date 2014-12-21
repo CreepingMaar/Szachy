@@ -10,15 +10,87 @@ package org.domain
  *
  * @author Marek
  */
-class Population {
-    
-    def players = new Player [20]
+public class Population {
+
+    Integer length = 14
+    def players = new Player[length]
 	
     Population() {
-        for(int i = 0; i < players.length; i++) {
+        for(int i = 0; i < length; i++) {
             players[i] = new Player()
-            players[i].setAverageFitness(players.length-i)
         }
+    }
+
+    public void averageScore() {
+        for(int i = 0; i < length; i++) {
+            //players[i].setAverageFitness(players[i].getFitness()/14)
+            players[i].setAverageFitness(length-i)
+        }
+    }
+
+    public void probability() {
+        Integer sum = ((1+length)*length)/2
+        Float distribution = 0
+
+        for(int i = 0; i < length; i++) {
+            players[i].setProbability((length-i)/sum)
+            distribution += players[i].getProbability()
+            players[i].setDistribution(distribution)
+        }
+    }
+
+    public Integer returnIndex(Float number) {
+        for(int i = 0; i < length; i++)
+            if(number < players[i].getDistribution())
+                return i
+    }
+
+    public void distribution() {
+        Random random = new Random()
+        def nextPlayers = new Player[length]
+        for(int i = 0; i < length; i++) {
+            nextPlayers[i] = players[returnIndex(random.nextFloat())]
+        }
+        players = nextPlayers
+    }
+
+    public void crossoverIndex() {
+        Random random = new Random()
+        Integer index
+        List<Integer> indexList = new ArrayList<Integer>()
+        for(int i = 0; i < length; i++) {
+            index = random.nextInt(100)+1
+            if(index < 60)
+                indexList.add(i)
+        }
+        while(1) {
+            if (indexList.size() % 2 == 1)
+                indexList.add(returnIfNotEven(indexList))
+            else
+                break
+        }
+    }
+
+    public Integer returnIfNotEven(List<Integer> indexList) {
+        Random random = new Random()
+        Integer index
+        for(int i = 0; i < length; i++) {
+            index = random.nextInt(100)+1
+            if(index < 60) {
+                if(!isInList(indexList, i))
+                    return i
+            }
+        }
+    }
+
+    public Boolean isInList(List<Integer> indexList, Integer i) {
+        Iterator<Integer> it = indexList.iterator()
+        while(it.hasNext()) {
+            Integer now = it.next()
+            if(i.equals(now))
+                return true
+        }
+        return false
     }
     
     public void bubbleSort() {
@@ -33,6 +105,11 @@ class Population {
             }
         }
     }
+
+    public Player getPlayer(int i) {
+        return players[i]
+    }
+
     void setValues(Evaluation values, Integer a, Integer b) {
         for(int i=0; i<8; i++)
             for(int j=0; j<8; j++)

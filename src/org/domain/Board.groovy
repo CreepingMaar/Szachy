@@ -24,7 +24,7 @@ class Board {
     Figure dragFigure
     Integer turn
     String turnColor
-    Integer endOfGame
+    Integer kindOfEnd
     
     
     public Board () {
@@ -95,22 +95,33 @@ class Board {
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
     }
     
-    public void playAi(FigurePosition globalMove, JTable table, Integer moveCounter, Population population, Evaluation value) {
+    public Integer playAi(FigurePosition globalMove, JTable table, Integer moveCounter, Population population, Evaluation value) {
         String end = "Valid";
-        
+        kindOfEnd = 2
+
         while(end=="Valid") {
             FigurePosition repeatedPosition = checkRepeated()
             end = this.playTurnAi(globalMove, table, value, repeatedPosition);
             moveCounter++
 
+            if(kindOfEnd == 0)
+                end = "Pat"
+            else if(kindOfEnd == 1)
+                end = "White Check Mate"
+            else if(kindOfEnd == -1)
+                end = "Black Check Mate"
+
             addMadeMove(globalMove)
             
-            if(moveCounter > 200)
+            if(moveCounter > 200) {
                 end = "Pat";
+                kindOfEnd = 0
+            }
             if(end != "Valid")
                 System.out.println(end);
         }
-        //population.bubbleSort()
+
+        return kindOfEnd
     }
     
     public void addMadeMove(FigurePosition globalMove) {
@@ -139,18 +150,12 @@ class Board {
     public String playTurnAi(FigurePosition globalMove, JTable table, Evaluation value, FigurePosition repeatedMove) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator()
         Figure now
-        String imagePath
         while(it.hasNext()) {
             now = it.next()
             now.getPossibleMoves().clear()
         }
         value.generateGlobalMoves(this)
-        Integer temp
-        temp = value.maxi(this, 3, globalMove, -100000, 100000, repeatedMove)
-        if(globalMove.getX() == -1 && globalMove.getY() == -1)
-            return 1
-        if(globalMove.getX() == -2 && globalMove.getY() == -2)
-            return 2
+        value.maxi(this, 3, globalMove, -100000, 100000, repeatedMove)
         it = this.getFiguresOnBoard().iterator()
         while(it.hasNext()) {
             now = it.next()

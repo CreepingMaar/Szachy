@@ -289,16 +289,13 @@ class Evaluation {
             globalMove.setLocalY(bestMove.getLocalY())
         }
         else if(depth == 3 && !bestMove && isNow) {
-            globalMove.setX(-1) 
-            globalMove.setY(-1)
-            globalMove.setLocalX(-1) 
-            globalMove.setLocalY(-1)
+            if(localTurn == -1)
+                board.setKindOfEnd(1)
+            else if(localTurn == 1)
+                board.setKindOfEnd(-1)
         }
         else if(depth == 3 && !bestMove && !isNow) {
-            globalMove.setX(-2) 
-            globalMove.setY(-2)
-            globalMove.setLocalX(-2) 
-            globalMove.setLocalY(-2)
+            board.setKindOfEnd(0)
         }
         return alfa
     }
