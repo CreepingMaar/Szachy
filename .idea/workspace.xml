@@ -26,12 +26,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Window.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Window.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/gui/Window.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="961" max-vertical-offset="2635">
-              <caret line="72" column="33" selection-start-line="72" selection-start-column="33" selection-end-line="72" selection-end-column="33" />
-              <folding />
+            <state vertical-scroll-proportion="0.2434555" vertical-offset="519" max-vertical-offset="2482">
+              <caret line="40" column="56" selection-start-line="40" selection-start-column="56" selection-end-line="40" selection-end-column="56" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#995#996#0" expanded="true" />
+                <element signature="e#1039#1040#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -39,18 +43,18 @@
       <file leaf-file-name="Board.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/Board.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1627" max-vertical-offset="4692">
-              <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1115" max-vertical-offset="4692">
+              <caret line="79" column="74" selection-start-line="79" selection-start-column="48" selection-end-line="79" selection-end-column="76" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Population.groovy" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Population.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/Population.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.8607595" vertical-offset="1071" max-vertical-offset="2635">
-              <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3617" max-vertical-offset="4012">
+              <caret line="223" column="9" selection-start-line="223" selection-start-column="9" selection-end-line="223" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -59,8 +63,8 @@
       <file leaf-file-name="Player.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/Player.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="200" max-vertical-offset="697">
-              <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="30" selection-end-column="48" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="302" max-vertical-offset="697">
+              <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -69,7 +73,7 @@
       <file leaf-file-name="FigurePosition.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/FigurePosition.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="96" max-vertical-offset="493">
+            <state vertical-scroll-proportion="0.0" vertical-offset="47" max-vertical-offset="493">
               <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
             </state>
@@ -79,7 +83,7 @@
       <file leaf-file-name="Figure.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/Figure.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="10523">
+            <state vertical-scroll-proportion="0.0" vertical-offset="10128" max-vertical-offset="10523">
               <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
               <folding />
             </state>
@@ -89,7 +93,7 @@
       <file leaf-file-name="Evaluation.groovy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/domain/Evaluation.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1572" max-vertical-offset="6341">
+            <state vertical-scroll-proportion="0.0" vertical-offset="5959" max-vertical-offset="6341">
               <caret line="297" column="32" selection-start-line="297" selection-start-column="31" selection-end-line="297" selection-end-column="32" />
               <folding />
             </state>
@@ -104,8 +108,8 @@
         <option value="$PROJECT_DIR$/src/org/domain/Evaluation.groovy" />
         <option value="$PROJECT_DIR$/src/org/domain/Board.groovy" />
         <option value="$PROJECT_DIR$/src/org/domain/Player.groovy" />
-        <option value="$PROJECT_DIR$/src/org/gui/Window.java" />
         <option value="$PROJECT_DIR$/src/org/domain/Population.groovy" />
+        <option value="$PROJECT_DIR$/src/org/gui/Window.java" />
       </list>
     </option>
   </component>
@@ -143,7 +147,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -201,10 +204,6 @@
               <option name="myItemId" value="gui" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Window.java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -231,6 +230,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -452,12 +452,13 @@
       <workItem from="1418761489835" duration="1153000" />
       <workItem from="1418981084951" duration="1052000" />
       <workItem from="1419089935613" duration="2809000" />
-      <workItem from="1419103656298" duration="6162000" />
+      <workItem from="1419103656298" duration="6715000" />
+      <workItem from="1419174242556" duration="14246000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71200000" />
+    <option name="totallyTimeSpent" value="85999000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -481,7 +482,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1374" height="748" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -502,7 +503,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33174604" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33174604" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -531,25 +532,47 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/gui/Window.java</url>
-          <line>73</line>
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>224</line>
           <properties />
-          <option name="timeStamp" value="346" />
+          <option name="timeStamp" value="403" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>225</line>
+          <properties />
+          <option name="timeStamp" value="404" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>226</line>
+          <properties />
+          <option name="timeStamp" value="405" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>227</line>
+          <properties />
+          <option name="timeStamp" value="406" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>228</line>
+          <properties />
+          <option name="timeStamp" value="407" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/domain/Population.groovy</url>
+          <line>229</line>
+          <properties />
+          <option name="timeStamp" value="408" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="358" />
+      <option name="time" value="409" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/domain/Figure.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="587" max-vertical-offset="10523">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/domain/Evaluation.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6341">
@@ -562,7 +585,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="417" max-vertical-offset="2346">
           <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -638,7 +665,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="417" max-vertical-offset="2346">
           <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -670,7 +701,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="417" max-vertical-offset="2346">
           <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -702,7 +737,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="448" max-vertical-offset="2295">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -726,7 +765,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="448" max-vertical-offset="2295">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -750,7 +793,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="448" max-vertical-offset="2295">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -796,7 +843,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="2295">
           <caret line="46" column="42" selection-start-line="46" selection-start-column="42" selection-end-line="46" selection-end-column="42" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -887,18 +938,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/domain/Figure.groovy">
+    <entry file="file://$PROJECT_DIR$/src/org/domain/Player.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="587" max-vertical-offset="10523">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="697">
+          <caret line="30" column="26" selection-start-line="30" selection-start-column="26" selection-end-line="30" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/domain/Player.groovy">
+    <entry file="file://$PROJECT_DIR$/src/org/domain/Figure.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="217" max-vertical-offset="697">
-          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="30" selection-end-column="48" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="587" max-vertical-offset="10523">
+          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -911,27 +962,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/gui/Window.java">
+    <entry file="file://$PROJECT_DIR$/src/org/domain/Population.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="961" max-vertical-offset="2635">
-          <caret line="72" column="33" selection-start-line="72" selection-start-column="33" selection-end-line="72" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3617" max-vertical-offset="4012">
+          <caret line="223" column="9" selection-start-line="223" selection-start-column="9" selection-end-line="223" selection-end-column="9" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Java/jdk1.8.0_20/src.zip!/javax/swing/ImageIcon.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.3645569" vertical-offset="1926" max-vertical-offset="10948">
+          <caret line="184" column="11" selection-start-line="184" selection-start-column="11" selection-end-line="184" selection-end-column="11" />
+          <folding>
+            <element signature="e#5676#5677#0" expanded="false" />
+            <element signature="e#5716#5717#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/domain/Board.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="4692">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="68" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1115" max-vertical-offset="4692">
+          <caret line="79" column="74" selection-start-line="79" selection-start-column="48" selection-end-line="79" selection-end-column="76" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/domain/Population.groovy">
+    <entry file="file://$PROJECT_DIR$/src/org/gui/Window.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.8607595" vertical-offset="1071" max-vertical-offset="2635">
-          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
-          <folding />
+        <state vertical-scroll-proportion="0.2434555" vertical-offset="519" max-vertical-offset="2482">
+          <caret line="40" column="56" selection-start-line="40" selection-start-column="56" selection-end-line="40" selection-end-column="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

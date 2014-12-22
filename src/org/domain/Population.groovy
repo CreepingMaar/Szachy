@@ -6,6 +6,8 @@
 
 package org.domain
 
+import javax.swing.JTable
+
 /**
  *
  * @author Marek
@@ -23,8 +25,8 @@ public class Population {
 
     public void averageScore() {
         for(int i = 0; i < length; i++) {
-            //players[i].setAverageFitness(players[i].getFitness()/14)
-            players[i].setAverageFitness(length-i)
+            players[i].setAverageFitness(players[i].getFitness()/14)
+            //players[i].setAverageFitness(length-i)
         }
     }
 
@@ -69,6 +71,49 @@ public class Population {
             else
                 break
         }
+        crossover(indexList)
+    }
+
+    public void crossover(List<Integer> indexList) {
+        Integer first, second, firstParent, secondParent
+        while(indexList) {
+            Random random = new Random()
+            first = random.nextInt(indexList.size())
+            firstParent = indexList.getAt(first)
+            indexList.remove(first)
+            second = random.nextInt(indexList.size())
+            secondParent = indexList.getAt(second)
+            indexList.remove(second)
+            crossParents(firstParent, secondParent)
+        }
+    }
+
+    public void crossParents(Integer first, Integer second) {
+        Player firstPlayer, secondPlayer
+        def halfGenotype, secondHalfGenotype
+        firstPlayer = players[first]
+        secondPlayer = players[second]
+        halfGenotype = firstPlayer.getGenotype().take(192)
+        secondHalfGenotype = secondPlayer.getGenotype().take(192)
+        for(int i = 0; i < 192; i++) {
+            firstPlayer.getGenotype().putAt(i, secondHalfGenotype[i])
+            secondPlayer.getGenotype().putAt(i, halfGenotype[i])
+        }
+
+    }
+
+    public void mutation() {
+        Random random = new Random()
+        Integer index
+        for(int i = 0; i < length; i++)
+            for(int j = 0; j < 384; j++) {
+                index = random.nextInt(100)+1
+                if(index == 1)
+                    players[i].getGenotype().putAt(j, random.nextInt(101)-50)
+            }
+
+
+
     }
 
     public Integer returnIfNotEven(List<Integer> indexList) {
@@ -147,6 +192,42 @@ public class Population {
         for(int i=40; i<48; i++)
             for(int j=40; j<48; j++)
                 values.whiteRookValue[i-40][j-40] = players[b].genotype[i*8+j-40]
+    }
+
+    public void playPopulation(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove) {
+        for(int i = 0; i < getLength(); i++) {
+            for(int j = i + 1; j < getLength(); j++) {
+                Integer moveCounter = 0;
+                newBoard.resetBoard();
+                for(int l = 0; l < newBoard.getWidth(); l++)
+                    for(int k = 0; k < newBoard.getHeight(); k++)
+                        table.setValueAt(null, k, l);
+                Iterator<Figure> it = newBoard.getFiguresOnBoard().iterator()
+                Figure now
+                while(it.hasNext()) {
+                    now = it.next()
+                    Integer x = now.getPosition().getX();
+                    Integer y = now.getPosition().getY();
+                    String imagePath = now.getImagePath();
+                    table.setValueAt(imagePath, y, x);
+                }
+                Integer result = newBoard.playAi(globalMove, table, moveCounter, this, value);
+                if(result == 0) {
+                    getPlayer(i).addFitness(1);
+                    getPlayer(j).addFitness(1);
+                } else if(result == 1) {
+                    getPlayer(j).addFitness(2);
+                } else if(result == -1) {
+                    getPlayer(i).addFitness(2);
+                }
+            }
+        }
+        averageScore();
+        bubbleSort();
+        probability();
+        distribution();
+        crossoverIndex();
+        mutation();
     }
     
 }

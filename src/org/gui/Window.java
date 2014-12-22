@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import org.domain.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Component;
 import java.util.Iterator;
 /**
@@ -21,17 +22,25 @@ public class Window extends JFrame {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Szachy");
         FigurePosition globalMove = new FigurePosition(0,0);
-        frame.setSize(800, 800);
+        frame.setSize(800, 700);
         Board newBoard = new Board();
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JTable table = new JTable(newBoard.getWidth(), newBoard.getHeight());
-
+        JTable table = new JTable(newBoard.getWidth(), newBoard.getHeight()) {
+            @Override
+            public boolean isCellEditable ( int row, int col) {
+                return false;
+            }
+        };
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
         table.setRowSelectionAllowed(false);
         table.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         table.setAutoResizeMode(0);
         cellSize(table, newBoard.getCellWidth(), newBoard.getCellHeight());
         table.setDefaultRenderer(Object.class, new YourTableCellRendererr());
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setViewportView(table);
+        scrollPane.setRowHeaderView(new JLabel(new ImageIcon("src/org/icons/chess-3-xl.png")));
         JLabel label = new JLabel();
         JPanel panel = new JPanel();
         panel.add(label);
@@ -41,38 +50,14 @@ public class Window extends JFrame {
         Population population = new Population();
         Evaluation value = new Evaluation();
 
-        /*for(int i = 0; i < 15; i++) {
-            for(int j = i + 1; j < 15; j++) {
+        for(int i = 0; i < population.getLength(); i++)
+            for(int j = i + 1; j < population.getLength(); j++)
                 population.setValues(value, i, j);
-                Integer moveCounter = 0;
-                newBoard.resetBoard();
-                for(int l = 0; l < newBoard.getWidth(); l++)
-                    for(int k = 0; k < newBoard.getHeight(); k++)
-                        table.setValueAt(null, k, l);
-                newBoard.getFiguresOnBoard().forEach((string) -> {
-                    Integer x = string.getPosition().getX();
-                    Integer y = string.getPosition().getY();
-                    String imagePath = string.getImagePath();
-                    table.setValueAt(imagePath, y, x);
-                });
-                Integer result = newBoard.playAi(globalMove, table, moveCounter, population, value);
-                if(result == 0) {
-                    population.getPlayer(i).addFitness(1);
-                    population.getPlayer(j).addFitness(1);
-                } else if(result == 1) {
-                    population.getPlayer(j).addFitness(2);
-                } else if(result == -1) {
-                    population.getPlayer(i).addFitness(2);
-                }
-            }
-        }*/
-        population.averageScore();
-        //population.bubbleSort();
-        population.probability();
-        population.distribution();
-        population.crossoverIndex();
+
+        for(int i = 0; i < 2; i++)
+            population.playPopulation(newBoard, value, table, globalMove);
         System.out.print("ehh");
-          
+
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -140,7 +125,8 @@ class YourTableCellRendererr extends DefaultTableCellRenderer {
 
                 JLabel label = (JLabel)super.getTableCellRendererComponent(  
             table, value, isSelected, hasFocus, row, column  
-        );  
+        );
+
     Component c = 
       super.getTableCellRendererComponent(table, value,
                                           isSelected, hasFocus,
