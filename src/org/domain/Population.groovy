@@ -7,6 +7,7 @@
 package org.domain
 
 import javax.swing.JTable
+import org.gui.*;
 
 /**
  *
@@ -192,6 +193,21 @@ public class Population {
         for(int i=40; i<48; i++)
             for(int j=40; j<48; j++)
                 values.whiteRookValue[i-40][j-40] = players[b].genotype[i*8+j-40]
+    }
+
+    void setClassic(Evaluation values) {
+        values.blackPawnValue = values.getPawnValue()
+        values.blackKnightValue = values.getKnightValue()
+        values.blackQueenValue = values.getQueenValue()
+        values.blackBishopValue = values.getBishopValue()
+        values.blackKingValue = values.getKingValue()
+        values.blackRookValue = values.getKingValue()
+        values.whitePawnValue = values.getPawnValue()
+        values.whiteKnightValue = values.getKnightValue()
+        values.whiteQueenValue = values.getQueenValue()
+        values.whiteBishopValue = values.getBishopValue()
+        values.whiteKingValue = values.getKingValue()
+        values.whiteRookValue = values.getKingValue()
     }
 
     public void playPopulation(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove) {

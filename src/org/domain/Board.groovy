@@ -42,10 +42,10 @@ class Board {
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(7, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(0, 7)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(7, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(1, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(6, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(1, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(6, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(1, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(6, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(1, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(6, 7)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(2, 0)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(5, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(2, 7)))
@@ -81,10 +81,10 @@ class Board {
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(7, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(0, 7)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(7, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(1, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-44-xl.png", "knight", new FigurePosition(6, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(1, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-5-xl.png", "knight", new FigurePosition(6, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(1, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(6, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(1, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(6, 7)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(2, 0)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(5, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(2, 7)))
@@ -92,7 +92,7 @@ class Board {
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-16-xl.png", "queen", new FigurePosition(3, 0)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/chess-26-xl.png", "king", new FigurePosition(4, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/chess-2-xl.png", "queen", new FigurePosition(3, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKing.png", "king", new FigurePosition(4, 7)))
     }
     
     public Integer playAi(FigurePosition globalMove, JTable table, Integer moveCounter, Population population, Evaluation value) {
@@ -175,13 +175,13 @@ class Board {
         return "Valid"
     }
     
-    public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove) {
+    public Boolean choseDragFigure(Integer row, Integer col, FigurePosition globalMove, Evaluation value) {
         Figure now
-        Evaluation value = new Evaluation()
         String nowColor
         Integer x, y
         Integer temp
-        temp = value.maxi(this, 3, globalMove, -100000, 100000)
+        FigurePosition repeatedPosition
+        temp = value.maxi(this, 3, globalMove, -100000, 100000, repeatedPosition)
         if(globalMove.getX() == -1 && globalMove.getY() == -1)
             println "Check Mate"
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
