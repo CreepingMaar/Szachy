@@ -6,6 +6,7 @@
 
 package org.domain
 
+import javax.swing.JLabel
 import javax.swing.JTable
 import org.gui.*;
 
@@ -112,9 +113,6 @@ public class Population {
                 if(index == 1)
                     players[i].getGenotype().putAt(j, random.nextInt(101)-50)
             }
-
-
-
     }
 
     public Integer returnIfNotEven(List<Integer> indexList) {
@@ -244,6 +242,55 @@ public class Population {
         distribution();
         crossoverIndex();
         mutation();
+    }
+
+    public void playWeak(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove, Window tempWindow, JLabel label) {
+        /*for(int i = 0; i < getLength(); i++) {
+            for(int j = i + 1; j < getLength(); j++) {
+                Integer moveCounter = 0;
+                newBoard.resetBoard();
+                for(int l = 0; l < newBoard.getWidth(); l++)
+                    for(int k = 0; k < newBoard.getHeight(); k++)
+                        table.setValueAt(null, k, l);
+                Iterator<Figure> it = newBoard.getFiguresOnBoard().iterator()
+                Figure now
+                while(it.hasNext()) {
+                    now = it.next()
+                    Integer x = now.getPosition().getX();
+                    Integer y = now.getPosition().getY();
+                    String imagePath = now.getImagePath();
+                    table.setValueAt(imagePath, y, x);
+                }
+                Integer result = newBoard.playAi(globalMove, table, moveCounter, this, value);
+                if(result == 0) {
+                    getPlayer(i).addFitness(1);
+                    getPlayer(j).addFitness(1);
+                } else if(result == 1) {
+                    getPlayer(j).addFitness(2);
+                } else if(result == -1) {
+                    getPlayer(i).addFitness(2);
+                }
+            }
+        }
+        averageScore();
+        bubbleSort();
+        */
+        setValues(value, 0, 0)
+        newBoard.resetBoard();
+        for(int l = 0; l < newBoard.getWidth(); l++)
+            for(int k = 0; k < newBoard.getHeight(); k++)
+                table.setValueAt(null, k, l);
+        Iterator<Figure> it = newBoard.getFiguresOnBoard().iterator()
+        Figure now
+        while(it.hasNext()) {
+            now = it.next()
+            Integer x = now.getPosition().getX();
+            Integer y = now.getPosition().getY();
+            String imagePath = now.getImagePath();
+            table.setValueAt(imagePath, y, x);
+        }
+
+        tempWindow.addMouse(table, label, globalMove, value, newBoard)
     }
     
 }

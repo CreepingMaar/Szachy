@@ -34,35 +34,9 @@ class Board {
         cellHeight = 80
         cellWidth = 80
         dragFigure = new Figure("blank", "", "", new FigurePosition(0, 0))
-        for(int i = 0; i < width; i++) {
-            figuresOnBoard.add(new Figure("black", "src/org/icons/chess-666-xl.png", "pawn", new FigurePosition(i, 1)))
-            figuresOnBoard.add(new Figure("white", "src/org/icons/chess-8-xl.png", "pawn", new FigurePosition(i, 6)))
-        }
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(0, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(7, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(0, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(7, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(1, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(6, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(1, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(6, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(2, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(5, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(2, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(5, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-16-xl.png", "queen", new FigurePosition(3, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-26-xl.png", "king", new FigurePosition(4, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-2-xl.png", "queen", new FigurePosition(3, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-18-xl.png", "king", new FigurePosition(4, 7)))
+        addGraphics()
     }
-    
-    public String whosTurn(Integer turn) {
-        if(turn == 1)
-            return "white"
-        else if(turn == -1)
-            return "black"
-    }
-    
+
     public void resetBoard() {
         movesDone.clear()
         figuresOnBoard.clear()
@@ -73,28 +47,39 @@ class Board {
         cellHeight = 80
         cellWidth = 80
         dragFigure = new Figure("blank", "", "", new FigurePosition(0, 0))
+        addGraphics()
+    }
+
+    public void addGraphics() {
         for(int i = 0; i < width; i++) {
-            figuresOnBoard.add(new Figure("black", "src/org/icons/chess-666-xl.png", "pawn", new FigurePosition(i, 1)))
-            figuresOnBoard.add(new Figure("white", "src/org/icons/chess-8-xl.png", "pawn", new FigurePosition(i, 6)))
+            figuresOnBoard.add(new Figure("black", "src/org/icons/blackPawn.png", "pawn", new FigurePosition(i, 1)))
+            figuresOnBoard.add(new Figure("white", "src/org/icons/whitePawn.png", "pawn", new FigurePosition(i, 6)))
         }
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(0, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-3-xl.png", "rook", new FigurePosition(7, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(0, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-41-xl.png", "rook", new FigurePosition(7, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackRook.png", "rook", new FigurePosition(0, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackRook.png", "rook", new FigurePosition(7, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteRook.png", "rook", new FigurePosition(0, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteRook.png", "rook", new FigurePosition(7, 7)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(1, 0)))
         figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(6, 0)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(1, 7)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(6, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(2, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-21-xl.png", "bishop", new FigurePosition(5, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(2, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-30-xl.png", "bishop", new FigurePosition(5, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-16-xl.png", "queen", new FigurePosition(3, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/chess-26-xl.png", "king", new FigurePosition(4, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/chess-2-xl.png", "queen", new FigurePosition(3, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackBishop.png", "bishop", new FigurePosition(2, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackBishop.png", "bishop", new FigurePosition(5, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteBishop.png", "bishop", new FigurePosition(2, 7)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteBishop.png", "bishop", new FigurePosition(5, 7)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackQueen.png", "queen", new FigurePosition(3, 0)))
+        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKing.png", "king", new FigurePosition(4, 0)))
+        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteQueen.png", "queen", new FigurePosition(3, 7)))
         figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKing.png", "king", new FigurePosition(4, 7)))
     }
     
+    public String whosTurn(Integer turn) {
+        if(turn == 1)
+            return "white"
+        else if(turn == -1)
+            return "black"
+    }
+
     public Integer playAi(FigurePosition globalMove, JTable table, Integer moveCounter, Population population, Evaluation value) {
         String end = "Valid";
         kindOfEnd = 2
