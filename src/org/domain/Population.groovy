@@ -244,7 +244,7 @@ public class Population {
         mutation();
     }
 
-    public void playWeak(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove, Window tempWindow, JLabel label) {
+    public void playWeak(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove, Window tempWindow) {
         /*for(int i = 0; i < getLength(); i++) {
             for(int j = i + 1; j < getLength(); j++) {
                 Integer moveCounter = 0;
@@ -290,7 +290,7 @@ public class Population {
             table.setValueAt(imagePath, y, x);
         }
 
-        tempWindow.addMouse(table, label, globalMove, value, newBoard)
+        tempWindow.addMouse(table, globalMove, value, newBoard)
     }
     
 }

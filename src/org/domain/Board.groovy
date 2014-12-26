@@ -23,8 +23,9 @@ class Board {
     List<FigurePosition> movesDone = new ArrayList<FigurePosition>()
     Figure dragFigure
     Integer turn
-    String turnColor
+    def icons = new String[12]
     Integer kindOfEnd
+    Boolean isChanged = false
     
     
     public Board () {
@@ -51,26 +52,62 @@ class Board {
     }
 
     public void addGraphics() {
+        if(isChanged == false)
+            changeColor("white")
+        else
+            changeColor("black")
         for(int i = 0; i < width; i++) {
-            figuresOnBoard.add(new Figure("black", "src/org/icons/blackPawn.png", "pawn", new FigurePosition(i, 1)))
-            figuresOnBoard.add(new Figure("white", "src/org/icons/whitePawn.png", "pawn", new FigurePosition(i, 6)))
+            figuresOnBoard.add(new Figure("black", icons[1], "pawn", new FigurePosition(i, 1)))
+            figuresOnBoard.add(new Figure("white", icons[0], "pawn", new FigurePosition(i, 6)))
         }
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackRook.png", "rook", new FigurePosition(0, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackRook.png", "rook", new FigurePosition(7, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteRook.png", "rook", new FigurePosition(0, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteRook.png", "rook", new FigurePosition(7, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(1, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKnight.png", "knight", new FigurePosition(6, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(1, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKnight.png", "knight", new FigurePosition(6, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackBishop.png", "bishop", new FigurePosition(2, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackBishop.png", "bishop", new FigurePosition(5, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteBishop.png", "bishop", new FigurePosition(2, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteBishop.png", "bishop", new FigurePosition(5, 7)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackQueen.png", "queen", new FigurePosition(3, 0)))
-        figuresOnBoard.add(new Figure("black", "src/org/icons/blackKing.png", "king", new FigurePosition(4, 0)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteQueen.png", "queen", new FigurePosition(3, 7)))
-        figuresOnBoard.add(new Figure("white", "src/org/icons/whiteKing.png", "king", new FigurePosition(4, 7)))
+        figuresOnBoard.add(new Figure("black", icons[3], "rook", new FigurePosition(0, 0)))
+        figuresOnBoard.add(new Figure("black", icons[3], "rook", new FigurePosition(7, 0)))
+        figuresOnBoard.add(new Figure("white", icons[2], "rook", new FigurePosition(0, 7)))
+        figuresOnBoard.add(new Figure("white", icons[2], "rook", new FigurePosition(7, 7)))
+        figuresOnBoard.add(new Figure("black", icons[5], "knight", new FigurePosition(1, 0)))
+        figuresOnBoard.add(new Figure("black", icons[5], "knight", new FigurePosition(6, 0)))
+        figuresOnBoard.add(new Figure("white", icons[4], "knight", new FigurePosition(1, 7)))
+        figuresOnBoard.add(new Figure("white", icons[4], "knight", new FigurePosition(6, 7)))
+        figuresOnBoard.add(new Figure("black", icons[7], "bishop", new FigurePosition(2, 0)))
+        figuresOnBoard.add(new Figure("black", icons[7], "bishop", new FigurePosition(5, 0)))
+        figuresOnBoard.add(new Figure("white", icons[6], "bishop", new FigurePosition(2, 7)))
+        figuresOnBoard.add(new Figure("white", icons[6], "bishop", new FigurePosition(5, 7)))
+        figuresOnBoard.add(new Figure("black", icons[9], "queen", new FigurePosition(3, 0)))
+        figuresOnBoard.add(new Figure("black", icons[11], "king", new FigurePosition(4, 0)))
+        figuresOnBoard.add(new Figure("white", icons[8], "queen", new FigurePosition(3, 7)))
+        figuresOnBoard.add(new Figure("white", icons[10], "king", new FigurePosition(4, 7)))
+    }
+
+    public void changeColor(String color) {
+        if(color == "white") {
+            icons[0] = "src/org/icons/whitePawn.png"
+            icons[1] = "src/org/icons/blackPawn.png"
+            icons[2] = "src/org/icons/whiteRook.png"
+            icons[3] = "src/org/icons/blackRook.png"
+            icons[4] = "src/org/icons/whiteKnight.png"
+            icons[5] = "src/org/icons/blackKnight.png"
+            icons[6] = "src/org/icons/whiteBishop.png"
+            icons[7] = "src/org/icons/blackBishop.png"
+            icons[8] = "src/org/icons/whiteQueen.png"
+            icons[9] = "src/org/icons/blackQueen.png"
+            icons[10] = "src/org/icons/whiteKing.png"
+            icons[11] = "src/org/icons/blackKing.png"
+            isChanged = false
+        } else {
+            icons[1] = "src/org/icons/whitePawn.png"
+            icons[0] = "src/org/icons/blackPawn.png"
+            icons[3] = "src/org/icons/whiteRook.png"
+            icons[2] = "src/org/icons/blackRook.png"
+            icons[5] = "src/org/icons/whiteKnight.png"
+            icons[4] = "src/org/icons/blackKnight.png"
+            icons[7] = "src/org/icons/whiteBishop.png"
+            icons[6] = "src/org/icons/blackBishop.png"
+            icons[9] = "src/org/icons/whiteQueen.png"
+            icons[8] = "src/org/icons/blackQueen.png"
+            icons[11] = "src/org/icons/whiteKing.png"
+            icons[10] = "src/org/icons/blackKing.png"
+            isChanged = true
+        }
     }
     
     public String whosTurn(Integer turn) {

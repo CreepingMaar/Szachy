@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.domain.*;
 import javax.swing.*;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author Marek
@@ -19,8 +21,11 @@ import javax.swing.*;
 
 public class Window extends JFrame {
     static Boolean drag = false;
+    static Boolean goodMoves = false;
+    static Integer whoTurn = 1;
+    static Integer notMultipleDrags = 0;
 
-    Window(Board newBoard, MyTable table, FigurePosition globalMove, JLabel label) {
+    Window(Board newBoard, MyTable table, FigurePosition globalMove) {
 
         setSize(800, 730);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -41,6 +46,8 @@ public class Window extends JFrame {
         JRadioButtonMenuItem startEasy = new JRadioButtonMenuItem("Easy genetic opponent");
         JRadioButtonMenuItem startHard = new JRadioButtonMenuItem("Hard genetic opponent");
         JRadioButtonMenuItem startConst = new JRadioButtonMenuItem("Opponent based on constant values");
+        JCheckBoxMenuItem showGoodMove = new JCheckBoxMenuItem("Show good moves");
+        JMenuItem runGame = new JMenuItem("Run");
         ButtonGroup game = new ButtonGroup();
         game.add(startEasy);
         game.add(startHard);
@@ -49,6 +56,8 @@ public class Window extends JFrame {
         chooseOpponent.add(startHard);
         chooseOpponent.addSeparator();
         chooseOpponent.add(startConst);
+        startGame.add(showGoodMove);
+        startGame.add(runGame);
 
         JRadioButtonMenuItem chooseWhite = new JRadioButtonMenuItem("Choose white");
         JRadioButtonMenuItem chooseBlack = new JRadioButtonMenuItem("Choose black");
@@ -59,53 +68,64 @@ public class Window extends JFrame {
         chooseColor.add(chooseWhite);
         chooseColor.add(chooseBlack);
 
-        startHard.addActionListener(new ActionListener() {
+        runGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 menuBar.removeAll();
                 menuBar.repaint();
                 new Thread() {
                     public void run() {
-                        playHard(newBoard, table, globalMove);
-                    }
-                }.start();
-            }
-        });
-        startEasy.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                menuBar.removeAll();
-                menuBar.repaint();
-                new Thread() {
-                    public void run() {
-                        Population population = new Population();
-                        Evaluation value = new Evaluation();
-
-                        for(int i = 0; i < population.getLength(); i++)
-                            for(int j = i + 1; j < population.getLength(); j++)
-                                population.setValues(value, i, j);
-                        population.playWeak(newBoard, value, table, globalMove, tempWindow, label);
-                    }
-                }.start();
-            }
-        });
-        startConst.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                menuBar.removeAll();
-                menuBar.repaint();
-                new Thread() {
-                    public void run() {
-                        Population population = new Population();
-                        Evaluation values = new Evaluation();
-                        population.setClassic(values);
-                        Iterator<Figure> it = newBoard.getFiguresOnBoard().iterator();
-                        Figure now;
-                        while(it.hasNext()) {
-                            now = it.next();
-                            Integer x = now.getPosition().getX();
-                            Integer y = now.getPosition().getY();
-                            String imagePath = now.getImagePath();
-                            table.setValueAt(imagePath, y, x);
+                        if(showGoodMove.isSelected())
+                            goodMoves = true;
+                        if(startEasy.isSelected() && (chooseWhite.isSelected() || chooseBlack.isSelected())) {
+                            Population population = new Population();
+                            Evaluation value = new Evaluation();
+                            if(chooseWhite.isSelected()) {
+                                newBoard.changeColor("white");
+                                whoTurn = 1;
+                            }
+                            else {
+                                newBoard.changeColor("black");
+                                whoTurn = -1;
+                            }
+                            for(int i = 0; i < population.getLength(); i++)
+                                for(int j = i + 1; j < population.getLength(); j++)
+                                    population.setValues(value, i, j);
+                            population.playWeak(newBoard, value, table, globalMove, tempWindow);
                         }
-                        addMouse(table, label, globalMove, values, newBoard);
+                        else if(startHard.isSelected() && (chooseWhite.isSelected() || chooseBlack.isSelected())) {
+                            if(chooseWhite.isSelected()) {
+                                newBoard.changeColor("white");
+                                whoTurn = 1;
+                            }
+                            else {
+                                newBoard.changeColor("black");
+                                whoTurn = -1;
+                            }
+                            playHard(newBoard, table, globalMove);
+                        }
+                        else if(startConst.isSelected() && (chooseWhite.isSelected() || chooseBlack.isSelected())) {
+                            Population population = new Population();
+                            Evaluation values = new Evaluation();
+                            population.setClassic(values);
+                            Iterator<Figure> it = newBoard.getFiguresOnBoard().iterator();
+                            Figure now;
+                            if(chooseWhite.isSelected()) {
+                                newBoard.changeColor("white");
+                                whoTurn = 1;
+                            }
+                            else {
+                                newBoard.changeColor("black");
+                                whoTurn = -1;
+                            }
+                            while(it.hasNext()) {
+                                now = it.next();
+                                Integer x = now.getPosition().getX();
+                                Integer y = now.getPosition().getY();
+                                String imagePath = now.getImagePath();
+                                table.setValueAt(imagePath, y, x);
+                            }
+                            addMouse(table, globalMove, values, newBoard);
+                        }
                     }
                 }.start();
             }
@@ -120,14 +140,12 @@ public class Window extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JLabel label = new JLabel();
-                MyTable table = new MyTable(newBoard.getWidth(), newBoard.getHeight(), label, newBoard, globalMove);
-                final Window frame = new Window(newBoard, table, globalMove, label);
+                MyTable table = new MyTable(newBoard.getWidth(), newBoard.getHeight(), newBoard, globalMove);
+                final Window frame = new Window(newBoard, table, globalMove);
                 JScrollPane scrollPane = new JScrollPane(table);
 
                 scrollPane.setRowHeaderView(new JLabel(new ImageIcon("src/org/icons/rowsNumbers.png")));
                 JPanel panel = new JPanel();
-                panel.add(label);
                 frame.add(panel, BorderLayout.EAST);
                 frame.add(scrollPane);
                 frame.setVisible(true);
@@ -139,58 +157,78 @@ public class Window extends JFrame {
         Population population = new Population();
         Evaluation value = new Evaluation();
 
-        for(int i = 0; i < population.getLength(); i++)
-            for(int j = i + 1; j < population.getLength(); j++)
+        for (int i = 0; i < population.getLength(); i++)
+            for (int j = i + 1; j < population.getLength(); j++)
                 population.setValues(value, i, j);
 
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
             population.playPopulation(newBoard, value, table, globalMove);
     }
 
-    public static void addMouse(MyTable table, JLabel label, FigurePosition globalMove, Evaluation values, Board newBoard) {
+    public static void addMouse(MyTable table, FigurePosition globalMove, Evaluation values, Board newBoard) {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 Integer row = table.rowAtPoint(evt.getPoint());
                 Integer col = table.columnAtPoint(evt.getPoint());
+                FigurePosition repeatedMove = null;
 
-                if (!drag) {
-                    drag = newBoard.choseDragFigure(row, col, globalMove, values);
-                    label.setText(globalMove.getX().toString() + globalMove.getY().toString() + " " + globalMove.getLocalX().toString() + globalMove.getLocalY().toString());
-                } else if (drag) {
-                    Integer y = newBoard.getDragFigure().getPosition().getY();
-                    Integer x = newBoard.getDragFigure().getPosition().getX();
-                    Integer possY;
-                    Integer possX;
-                    String imagePath = newBoard.getDragFigure().getImagePath();
-                    FigurePosition nowMove;
-                    Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
-                    Figure nowFigure;
-                    Boolean validPosition = false;
-
-                    while (itMove.hasNext()) {
-                        nowMove = itMove.next();
-                        possY = nowMove.getY();
-                        possX = nowMove.getX();
-                        if (possY == row && possX == col) {
-                            newBoard.dropFigure(row, col);
-                            newBoard.setDraggedFigure(row, col);
-                            table.setValueAt(null, y, x);
-                            table.setValueAt(imagePath, row, col);
-                            validPosition = true;
+                    if (!drag) {
+                        if(whoTurn == -1 && notMultipleDrags == 0) {
+                            newBoard.playTurnAi(globalMove, table, values, repeatedMove);
                         }
+                        if(newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
+                            JOptionPane.showMessageDialog(null, "Check!");
+                        drag = newBoard.choseDragFigure(row, col, globalMove, values);
+                        if (goodMoves)
+                            table.setCells(globalMove.getY(), globalMove.getX());
+                        notMultipleDrags++;
+                    } else if (drag) {
+                        Integer y = newBoard.getDragFigure().getPosition().getY();
+                        Integer x = newBoard.getDragFigure().getPosition().getX();
+                        Integer possY;
+                        Integer possX;
+                        String imagePath = newBoard.getDragFigure().getImagePath();
+                        FigurePosition nowMove;
+                        Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
+                        Figure nowFigure;
+                        Boolean validPosition = false;
+
+                        while (itMove.hasNext()) {
+                            nowMove = itMove.next();
+                            possY = nowMove.getY();
+                            possX = nowMove.getX();
+                            if (possY == row && possX == col) {
+                                newBoard.dropFigure(row, col);
+                                newBoard.setDraggedFigure(row, col);
+                                table.setValueAt(null, y, x);
+                                table.setValueAt(imagePath, row, col);
+                                validPosition = true;
+                            }
+                        }
+
+                        if(validPosition && newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
+                            JOptionPane.showMessageDialog(null, "Check Mate!");
+
+                        if (!validPosition)
+                            JOptionPane.showMessageDialog(null, "Invalid move!");
+
+                        Iterator<Figure> itFigure = newBoard.getFiguresOnBoard().iterator();
+                        while (itFigure.hasNext()) {
+                            nowFigure = itFigure.next();
+                            nowFigure.getPossibleMoves().clear();
+                        }
+                        drag = false;
+
+                        if(validPosition && whoTurn == -1)
+                            notMultipleDrags = 0;
+
+                        if(validPosition && whoTurn == 1)
+                            newBoard.playTurnAi(globalMove, table, values, repeatedMove);
+
                     }
 
-                    if(!validPosition)
-                        JOptionPane.showMessageDialog(null, "Unvalid move!");
 
-                    Iterator<Figure> itFigure = newBoard.getFiguresOnBoard().iterator();
-                    while (itFigure.hasNext()) {
-                        nowFigure = itFigure.next();
-                        nowFigure.getPossibleMoves().clear();
-                    }
-                    drag = false;
-                }
             }
         });
     }
