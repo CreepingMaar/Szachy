@@ -7,7 +7,9 @@ package org.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 
 import org.domain.*;
@@ -87,9 +89,6 @@ public class Window extends JFrame {
                                 newBoard.changeColor("black");
                                 whoTurn = -1;
                             }
-                            for(int i = 0; i < population.getLength(); i++)
-                                for(int j = i + 1; j < population.getLength(); j++)
-                                    population.setValues(value, i, j);
                             population.playWeak(newBoard, value, table, globalMove, tempWindow);
                         }
                         else if(startHard.isSelected() && (chooseWhite.isSelected() || chooseBlack.isSelected())) {
@@ -157,10 +156,6 @@ public class Window extends JFrame {
         Population population = new Population();
         Evaluation value = new Evaluation();
 
-        for (int i = 0; i < population.getLength(); i++)
-            for (int j = i + 1; j < population.getLength(); j++)
-                population.setValues(value, i, j);
-
         for (int i = 0; i < 2; i++)
             population.playPopulation(newBoard, value, table, globalMove);
     }
@@ -184,31 +179,57 @@ public class Window extends JFrame {
                             table.setCells(globalMove.getY(), globalMove.getX());
                         notMultipleDrags++;
                     } else if (drag) {
-                        Integer y = newBoard.getDragFigure().getPosition().getY();
-                        Integer x = newBoard.getDragFigure().getPosition().getX();
                         Integer possY;
                         Integer possX;
-                        String imagePath = newBoard.getDragFigure().getImagePath();
                         FigurePosition nowMove;
-                        Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
+                        int checkCounter = 0;
+
+                        Figure nowCheck;
+                        Iterator<Figure> itCheck = newBoard.getFiguresOnBoard().iterator();
+
+                        while(itCheck.hasNext()) {
+                            nowCheck = itCheck.next();
+                            Iterator<FigurePosition> itCheckMove = nowCheck.getPossibleMoves().iterator();
+                            if(nowCheck.getColor() == newBoard.whosTurn(whoTurn)) {
+                                while (itCheckMove.hasNext()) {
+                                    nowMove = itCheckMove.next();
+                                    possY = nowMove.getY();
+                                    possX = nowMove.getX();
+
+                                    if (!newBoard.checkHumanCheck(possY, possX, newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn))) {
+                                        checkCounter++;
+                                    }
+                                }
+                            }
+                        }
+
+                        if(checkCounter == 0 && newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
+                            JOptionPane.showMessageDialog(null, "Check Mate!");
+                        else if(checkCounter == 0 && !newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
+                            JOptionPane.showMessageDialog(null, "Pat!");
+                        Integer y = newBoard.getDragFigure().getPosition().getY();
+                        Integer x = newBoard.getDragFigure().getPosition().getX();
+                        String imagePath = newBoard.getDragFigure().getImagePath();
                         Figure nowFigure;
                         Boolean validPosition = false;
+
+                        Iterator<FigurePosition> itMove = newBoard.getDragFigure().getPossibleMoves().iterator();
 
                         while (itMove.hasNext()) {
                             nowMove = itMove.next();
                             possY = nowMove.getY();
                             possX = nowMove.getX();
                             if (possY == row && possX == col) {
-                                newBoard.dropFigure(row, col);
-                                newBoard.setDraggedFigure(row, col);
-                                table.setValueAt(null, y, x);
-                                table.setValueAt(imagePath, row, col);
-                                validPosition = true;
+                                if(!newBoard.checkHumanCheck(row, col, newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn))) {
+                                    newBoard.dropFigure(row, col);
+                                    newBoard.setDraggedFigure(row, col);
+                                    table.setValueAt(null, y, x);
+                                    table.setValueAt(imagePath, row, col);
+                                    validPosition = true;
+                                } else
+                                    JOptionPane.showMessageDialog(null, "Check after move!!");
                             }
                         }
-
-                        if(validPosition && newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
-                            JOptionPane.showMessageDialog(null, "Check Mate!");
 
                         if (!validPosition)
                             JOptionPane.showMessageDialog(null, "Invalid move!");

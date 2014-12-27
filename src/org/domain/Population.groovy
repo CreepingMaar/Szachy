@@ -211,6 +211,7 @@ public class Population {
     public void playPopulation(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove) {
         for(int i = 0; i < getLength(); i++) {
             for(int j = i + 1; j < getLength(); j++) {
+                setValues(value, i, j);
                 Integer moveCounter = 0;
                 newBoard.resetBoard();
                 for(int l = 0; l < newBoard.getWidth(); l++)
@@ -245,8 +246,9 @@ public class Population {
     }
 
     public void playWeak(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove, Window tempWindow) {
-        /*for(int i = 0; i < getLength(); i++) {
+        for(int i = 0; i < getLength(); i++) {
             for(int j = i + 1; j < getLength(); j++) {
+                setValues(value, i, j);
                 Integer moveCounter = 0;
                 newBoard.resetBoard();
                 for(int l = 0; l < newBoard.getWidth(); l++)
@@ -274,7 +276,7 @@ public class Population {
         }
         averageScore();
         bubbleSort();
-        */
+
         setValues(value, 0, 0)
         newBoard.resetBoard();
         for(int l = 0; l < newBoard.getWidth(); l++)

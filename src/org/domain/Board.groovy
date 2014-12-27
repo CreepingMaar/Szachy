@@ -226,7 +226,7 @@ class Board {
         return false;
     }
     
-    public void dropFigure(Integer row, Integer col) {
+    public Figure dropFigure(Integer row, Integer col) {
         Iterator<Figure> it = this.getFiguresOnBoard().iterator();
         Figure now
         Integer x, y
@@ -237,6 +237,7 @@ class Board {
             if(x==col && y==row) {
                 this.getFiguresOffBoard().add(now);  
                 it.remove();
+                return now;
             } 
         }
     }
@@ -291,6 +292,45 @@ class Board {
             }
         }
         return false
+    }
+
+    public Boolean checkHumanCheck(Integer row, Integer col, Board board, Integer localTurn, Figure king) {
+        Iterator<Figure> itT = this.getFiguresOnBoard().iterator();
+        Figure nowT
+        Integer xT, yT
+        String myColor
+        Figure dropped
+        while(itT.hasNext()) {
+            nowT = itT.next();
+            xT = nowT.getPosition().getX()
+            yT = nowT.getPosition().getY()
+            if(xT==col && yT==row) {
+                myColor = nowT.getColor()
+                nowT.setColor("")
+                dropped = nowT
+            }
+        }
+        Integer x = this.getDragFigure().getPosition().getX()
+        Integer y = this.getDragFigure().getPosition().getY()
+        Iterator<Figure> it = this.getFiguresOnBoard().iterator()
+        Boolean willCheck = false
+        Figure moved;
+        while(it.hasNext()) {
+            Figure now = it.next()
+            if(now.getPosition().getX()==x && now.getPosition().getY()==y) {
+                now.getPosition().setX(col)
+                now.getPosition().setY(row)
+                moved = now
+            }
+        }
+        if(checkCheck(board, localTurn, king))
+            willCheck = true
+        if(dropped) {
+            dropped.setColor(myColor)
+        }
+        moved.getPosition().setX(x)
+        moved.getPosition().setY(y)
+        return willCheck
     }
 }
 
