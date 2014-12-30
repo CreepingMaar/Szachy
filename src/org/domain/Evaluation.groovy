@@ -14,18 +14,18 @@ import java.util.concurrent.CopyOnWriteArraySet
  */
 class Evaluation {
     
-    def blackPawnValue = new Integer[8][8]
-    def blackKnightValue = new Integer[8][8]
-    def blackBishopValue = new Integer[8][8]
-    def blackQueenValue = new Integer[8][8]
-    def blackKingValue = new Integer[8][8]
-    def blackRookValue = new Integer[8][8]
-    def whitePawnValue = new Integer[8][8]
-    def whiteKnightValue = new Integer[8][8]
-    def whiteBishopValue = new Integer[8][8]
-    def whiteQueenValue = new Integer[8][8]
-    def whiteKingValue = new Integer[8][8]
-    def whiteRookValue = new Integer[8][8]
+    Integer[][] blackPawnValue = new Integer[8][8]
+    Integer[][] blackKnightValue = new Integer[8][8]
+    Integer[][] blackBishopValue = new Integer[8][8]
+    Integer[][] blackQueenValue = new Integer[8][8]
+    Integer[][] blackKingValue = new Integer[8][8]
+    Integer[][] blackRookValue = new Integer[8][8]
+    Integer[][] whitePawnValue = new Integer[8][8]
+    Integer[][] whiteKnightValue = new Integer[8][8]
+    Integer[][] whiteBishopValue = new Integer[8][8]
+    Integer[][] whiteQueenValue = new Integer[8][8]
+    Integer[][] whiteKingValue = new Integer[8][8]
+    Integer[][] whiteRookValue = new Integer[8][8]
 
     Integer[][] pawnValue = [
         [0,  0,  0,  0,  0,  0,  0,  0],

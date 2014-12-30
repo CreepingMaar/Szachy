@@ -18,8 +18,8 @@ class Board {
     Integer height
     Integer cellHeight
     Integer cellWidth
-    Set<Figure> figuresOnBoard = new HashSet<Figure>()
-    Set<Figure> figuresOffBoard = new HashSet<Figure>()
+    List<Figure> figuresOnBoard = new ArrayList<Figure>()
+    List<Figure> figuresOffBoard = new ArrayList<Figure>()
     List<FigurePosition> movesDone = new ArrayList<FigurePosition>()
     Figure dragFigure
     Integer turn
@@ -132,8 +132,6 @@ class Board {
                 end = "White Check Mate"
             else if(kindOfEnd == -1)
                 end = "Black Check Mate"
-
-            addMadeMove(globalMove)
             
             if(moveCounter > 200) {
                 end = "Pat";
@@ -150,6 +148,13 @@ class Board {
         FigurePosition anotherMove = new FigurePosition(globalMove.getX(), globalMove.getY())
         anotherMove.setLocalX(globalMove.getLocalX())
         anotherMove.setLocalY(globalMove.getLocalY())
+        Iterator<Figure> it = this.getFiguresOffBoard().iterator()
+        Figure nowFigure
+        while(it.hasNext()) {
+            nowFigure = it.next()
+            if(nowFigure.getPosition().getX() == globalMove.getX() && nowFigure.getPosition().getY() == globalMove.getY())
+                anotherMove.setBeatenPiece(nowFigure)
+        }
         movesDone.add(anotherMove)
     }
 
@@ -194,6 +199,7 @@ class Board {
         setDraggedFigure(globalMove.getY(), globalMove.getX())
         table.setValueAt(null, globalMove.getLocalY(), globalMove.getLocalX())
         table.setValueAt(dragFigure.getImagePath(), globalMove.getY(), globalMove.getX())
+        addMadeMove(globalMove)
         return "Valid"
     }
     

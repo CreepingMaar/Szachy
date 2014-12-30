@@ -199,13 +199,13 @@ public class Population {
         values.blackQueenValue = values.getQueenValue()
         values.blackBishopValue = values.getBishopValue()
         values.blackKingValue = values.getKingValue()
-        values.blackRookValue = values.getKingValue()
+        values.blackRookValue = values.getRookValue()
         values.whitePawnValue = values.getPawnValue()
         values.whiteKnightValue = values.getKnightValue()
         values.whiteQueenValue = values.getQueenValue()
         values.whiteBishopValue = values.getBishopValue()
         values.whiteKingValue = values.getKingValue()
-        values.whiteRookValue = values.getKingValue()
+        values.whiteRookValue = values.getRookValue()
     }
 
     public void playPopulation(Board newBoard, Evaluation value, JTable table, FigurePosition globalMove) {
@@ -291,7 +291,7 @@ public class Population {
             String imagePath = now.getImagePath();
             table.setValueAt(imagePath, y, x);
         }
-
+        newBoard.movesDone.clear()
         tempWindow.addMouse(table, globalMove, value, newBoard)
     }
     

@@ -17,6 +17,7 @@ public class Figure {
     FigurePosition position
     Set<FigurePosition> possibleMoves = new HashSet<FigurePosition>()
     Boolean startPosition
+    Boolean isLoaded
     
     Figure(String color, String imagePath, String chessPiece, FigurePosition position) {
         this.color = color
@@ -24,6 +25,7 @@ public class Figure {
         this.chessPiece = chessPiece
         this.position = position
         this.startPosition = true
+        isLoaded = false
     }
     
     public void movePossibility(Board board) {

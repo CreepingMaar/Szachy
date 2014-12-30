@@ -16,7 +16,7 @@ public class FigurePosition {
     Integer y
     Integer localX
     Integer localY
-    String beatenPiece
+    Figure beatenPiece
     
     FigurePosition(Integer x, Integer y) {
         this.x = x;
