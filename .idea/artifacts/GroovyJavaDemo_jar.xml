@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GroovyJavaDemo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GroovyJavaDemo_jar</output-path>
+    <root id="archive" name="GroovyJavaDemo.jar">
+      <element id="module-output" name="GroovyJavaDemo" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dist/lib/groovy-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/dist/GroovyJavaDemo.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
