@@ -28,8 +28,9 @@ public class Window extends JFrame {
     static Integer whoTurn = 1;
     static Integer notMultipleDrags = 0;
 
-    Window(Board newBoard, MyTable table, FigurePosition globalMove) {
+    Window(Board newBoard, GraphicalTable table, FigurePosition globalMove) {
 
+        setTitle("Chess");
         setSize(680, 711);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -333,7 +334,7 @@ public class Window extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                MyTable table = new MyTable(newBoard.getWidth(), newBoard.getHeight(), newBoard, globalMove);
+                GraphicalTable table = new GraphicalTable(newBoard.getWidth(), newBoard.getHeight(), newBoard, globalMove);
                 final Window frame = new Window(newBoard, table, globalMove);
                 JScrollPane scrollPane = new JScrollPane(table);
 
@@ -346,13 +347,13 @@ public class Window extends JFrame {
         });
     }
 
-    public static void playHard(Board newBoard, MyTable table, FigurePosition globalMove, Population population, Evaluation value) {
+    public static void playHard(Board newBoard, GraphicalTable table, FigurePosition globalMove, Population population, Evaluation value) {
         for (int i = 0; i < 2; i++)
             population.playPopulation(newBoard, value, table, globalMove);
         newBoard.getMovesDone().clear();
     }
 
-    public static void addMouse(MyTable table, FigurePosition globalMove, Evaluation values, Board newBoard) {
+    public static void addMouse(GraphicalTable table, FigurePosition globalMove, Evaluation values, Board newBoard) {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -396,7 +397,7 @@ public class Window extends JFrame {
                         }
 
                         if(checkCounter == 0 && newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
-                            JOptionPane.showMessageDialog(null, "Check Mate!");
+                            JOptionPane.showMessageDialog(null, "Checkmate!");
                         else if(checkCounter == 0 && !newBoard.checkCheck(newBoard, whoTurn, newBoard.whosKing(newBoard, whoTurn)))
                             JOptionPane.showMessageDialog(null, "Pat!");
                         Integer y = newBoard.getDragFigure().getPosition().getY();
@@ -423,7 +424,7 @@ public class Window extends JFrame {
                                     humanMove.setLocalY(y);
                                     newBoard.addMadeMove(humanMove);
                                 } else
-                                    JOptionPane.showMessageDialog(null, "Check after move!!");
+                                    JOptionPane.showMessageDialog(null, "Check after move!");
                             }
                         }
 

@@ -11,11 +11,11 @@ import java.util.Iterator;
 /**
  * Created by Marek on 2014-12-22.
  */
-public class MyTable extends JTable {
+public class GraphicalTable extends JTable {
 
     static int cellRow, cellCol;
 
-    MyTable(Integer width, Integer height, Board newBoard, FigurePosition globalMove) {
+    GraphicalTable(Integer width, Integer height, Board newBoard, FigurePosition globalMove) {
         DefaultTableModel myModel = new DefaultTableModel(width, height);
         setModel(myModel);
         getTableHeader().setReorderingAllowed(false);
@@ -24,7 +24,7 @@ public class MyTable extends JTable {
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         setAutoResizeMode(0);
         cellSize(newBoard.getCellWidth(), newBoard.getCellHeight());
-        setDefaultRenderer(Object.class, new MyTableCellRenderer());
+        setDefaultRenderer(Object.class, new TableCellRenderer());
     }
 
     public void setCells(int row, int col) {
@@ -66,7 +66,7 @@ public class MyTable extends JTable {
     }
 }
 
-class MyTableCellRenderer extends DefaultTableCellRenderer {
+class TableCellRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 
         JLabel label = (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
